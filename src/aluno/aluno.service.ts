@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { User } from './entity/aluno.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -45,6 +45,31 @@ export class AlunoService {
            return user;
        } catch (error){
            throw new InternalServerErrorException('Erro ao salvar o usuário.')
+       }
+   }
+
+   findAll(): Promise<User[]>{
+       return this.userRepository.find();
+   }
+
+   async findOne(matricula: string): Promise<User>{
+       const user = await this.userRepository.findOneBy({matricula});
+       if(!user){
+           throw new NotFoundException(`Aluno com a matrícula ${matricula} não encontrado.`)
+       }
+       return user;
+   }
+
+   async update(matricula: string, updateData: UserDto): Promise<User> {
+       const user = await this.findOne(matricula);
+       this.userRepository.merge(user, updateData);
+       return this.userRepository.save(user);
+   }
+
+   async remove(matricula: string): Promise<void> {
+       const result = await this.userRepository.delete(matricula);
+       if(result.affected === 0){
+           throw new NotFoundException(`Aluno com a matrícula ${matricula} não encontrado para excluir.`)
        }
    }
 
