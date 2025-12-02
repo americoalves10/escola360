@@ -52,24 +52,24 @@ export class AlunoService {
        return this.userRepository.find();
    }
 
-   async findOne(matricula: string): Promise<User>{
-       const user = await this.userRepository.findOneBy({matricula});
+   async findOne(id: number): Promise<User>{
+       const user = await this.userRepository.findOneBy({id});
        if(!user){
-           throw new NotFoundException(`Aluno com a matrícula ${matricula} não encontrado.`)
+           throw new NotFoundException(`Aluno com a matrícula ${id} não encontrado.`)
        }
        return user;
    }
 
-   async update(matricula: string, updateData: UserDto): Promise<User> {
-       const user = await this.findOne(matricula);
+   async update(id: number, updateData: UserDto): Promise<User> {
+       const user = await this.findOne(id);
        this.userRepository.merge(user, updateData);
        return this.userRepository.save(user);
    }
-
-   async remove(matricula: string): Promise<void> {
-       const result = await this.userRepository.delete(matricula);
+   
+   async remove(id: number): Promise<void> {
+       const result = await this.userRepository.delete(id);
        if(result.affected === 0){
-           throw new NotFoundException(`Aluno com a matrícula ${matricula} não encontrado para excluir.`)
+           throw new NotFoundException(`Aluno com a matrícula ${id} não encontrado para excluir.`)
        }
    }
 

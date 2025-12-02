@@ -21,20 +21,20 @@ export class AlunoController {
        return this.alunoService.findAll();
    }
 
-   @Get(':matricula')
-   findOne(@Param('matricula') matricula: string): Promise<User>{
-       return this.alunoService.findOne(matricula);
+   @Get(':id')
+   findOne(@Param('id') id: number): Promise<User>{
+       return this.alunoService.findOne(id);
    }
 
-   @Patch(':matricula')
-   update(@Param('matricula') matricula: string, @Body() updateDto: UserDto): Promise<User>{
-       return this.alunoService.update(matricula, updateDto);
+   @Patch(':id')
+   update(@Param('id') id: number, @Body() updateDto: UserDto): Promise<User>{
+       return this.alunoService.update(id, updateDto);
    }
 
-   @Delete(':matricula')
+   @Delete(':id')
    @HttpCode(204)
-   remove(@Param('matricula') matricula: string): Promise<void> {
-       return this.alunoService.remove(matricula);
+   remove(@Param('id') id: number): Promise<void> {
+       return this.alunoService.remove(id);
    }
 
    @HttpCode(HttpStatus.OK)

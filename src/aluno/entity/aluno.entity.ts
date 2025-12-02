@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 
 @Entity()
@@ -6,8 +6,8 @@ import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
 export class User{
 
 
-   @PrimaryGeneratedColumn('uuid') //protege a identidade do usuário na criação
-   id: string;
+   @PrimaryGeneratedColumn() 
+   id: number;
 
    @Column()
    matricula: string;
