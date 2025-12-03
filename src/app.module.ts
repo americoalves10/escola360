@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { AlunoModule } from './aluno/aluno.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService, ConfigModule } from '@nestjs/config';
+import { AdministrativoModule } from './administrativo/administrativo.module';
 
 @Module({
  imports: [
@@ -27,6 +28,7 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
      inject:[ConfigService],
    }),
    AlunoModule,
+   AdministrativoModule,
  ],
  controllers: [AppController],
  providers: [AppService],
