@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "t
 
 
 @Entity()
-@Unique(['email'])
+@Unique(['email', 'cpf', 'matricula'])
 export class Professor{
 
 

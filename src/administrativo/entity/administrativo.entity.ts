@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 
 @Entity()
-@Unique(['email'])
+@Unique(['email', 'cpf', 'matricula'])
 export class Useradm{
 
 
