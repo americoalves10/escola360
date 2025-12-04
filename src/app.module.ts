@@ -5,6 +5,7 @@ import { AlunoModule } from './aluno/aluno.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { AdministrativoModule } from './administrativo/administrativo.module';
+import { ProfessorModule } from './professor/professor.module';
 
 @Module({
  imports: [
@@ -29,6 +30,7 @@ import { AdministrativoModule } from './administrativo/administrativo.module';
    }),
    AlunoModule,
    AdministrativoModule,
+   ProfessorModule,
  ],
  controllers: [AppController],
  providers: [AppService],

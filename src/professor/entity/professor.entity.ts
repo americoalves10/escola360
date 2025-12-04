@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "t
 
 @Entity()
 @Unique(['email'])
-export class User{
+export class Professor{
 
 
    @PrimaryGeneratedColumn() 
@@ -19,16 +19,16 @@ export class User{
    cpf: string;
    
    @Column()
-   dataNasc: Date;
+   dataAdmissao: Date;
    
    @Column()
    status: string;
    
    @Column()
-   turma: string;
+   formacaoAcad: string;
 
    @Column()
-   anoLetivo: number;
+   titulacao: string;
 
    @Column()
    email: string;

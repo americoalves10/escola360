@@ -6,10 +6,10 @@ export class UserDto{
    matricula: string;
    nome: string;
    cpf: string;
-   dataNasc: Date;
+   dataAdmissao: Date;
    status: string;
-   turma: string;
-   anoLetivo: number;
+   formacaoAcad: string;
+   titulacao: string;
    
    @IsNotEmpty({message:'O e-mail não pode ser vazio.'})
    @IsEmail({},{message:'forneça um e-mail válido.'})
@@ -20,3 +20,5 @@ export class UserDto{
    @MinLength(6,{message: 'A senha deve ter no mínimo 6 caracteres.'})
    password: string;
 }
+
+

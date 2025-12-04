@@ -19,8 +19,8 @@ export class AlunoService {
        private jwtService: JwtService
    ){}
 
-   async create(CreateUserDto: UserDto): Promise<User>{
-       const {matricula, nome, cpf, dataNasc, status, email, password} = CreateUserDto;
+    async create(CreateUserDto: UserDto): Promise<User>{
+       const {matricula, nome, cpf, dataNasc, status, turma, anoLetivo, email, password} = CreateUserDto;
 
        const userExists = await this.userRepository.findOne({where: {email}});
        if(userExists){
@@ -36,6 +36,8 @@ export class AlunoService {
             cpf,
             dataNasc,
             status,
+            turma,
+            anoLetivo,
             email,
             password: hashedPassword,
        });
@@ -46,34 +48,52 @@ export class AlunoService {
        } catch (error){
            throw new InternalServerErrorException('Erro ao salvar o usuário.')
        }
-   }
+    }
 
-   findAll(): Promise<User[]>{
+    findAll(): Promise<User[]>{
        return this.userRepository.find();
-   }
+    }
 
-   async findOne(id: number): Promise<User>{
+    async findOne(id: number): Promise<User>{
        const user = await this.userRepository.findOneBy({id});
        if(!user){
-           throw new NotFoundException(`Aluno com a matrícula ${id} não encontrado.`)
+           throw new NotFoundException(`Aluno com o id ${id} não encontrado.`)
        }
-       return user;
-   }
+        return user;
+    }
 
-   async update(id: number, updateData: UserDto): Promise<User> {
-       const user = await this.findOne(id);
-       this.userRepository.merge(user, updateData);
-       return this.userRepository.save(user);
-   }
-   
-   async remove(id: number): Promise<void> {
+    async update(id: number, updateData: UserDto): Promise<User> {
+        const user = await this.findOne(id);
+        const allowedFields = ["matricula", "nome", "cpf", "dataNasc", "status", "turma", "anoLetivo", "email", "password"];
+        
+        const sanitizedData: any = {};
+
+            // Garante que não entram campos inesperados
+            for (const key of Object.keys(updateData)) {
+                if (allowedFields.includes(key)) {
+                    sanitizedData[key] = updateData[key];
+                }
+            }
+
+            // Gerir password
+            if (sanitizedData.password) {
+                sanitizedData.password = await bcrypt.hash(sanitizedData.password, 10);
+            } else {
+                delete sanitizedData.password;
+            }
+
+        this.userRepository.merge(user, sanitizedData);
+        return this.userRepository.save(user);
+        }
+ 
+    async remove(id: number): Promise<void> {
        const result = await this.userRepository.delete(id);
        if(result.affected === 0){
-           throw new NotFoundException(`Aluno com a matrícula ${id} não encontrado para excluir.`)
+           throw new NotFoundException(`Aluno com o id ${id} não encontrado para excluir.`)
        }
-   }
+    }
 
-   async login(loginDto: UserDto): Promise<{access_token:string}>{
+    async login(loginDto: UserDto): Promise<{access_token:string}>{
        const {email,password} = loginDto;
 
        const user = await this.userRepository.findOne({where: {email}});
@@ -98,5 +118,5 @@ export class AlunoService {
        return{
            access_token:accesstoken
        };
-   }
+    }
 }

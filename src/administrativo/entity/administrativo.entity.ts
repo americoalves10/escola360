@@ -23,7 +23,10 @@ export class Useradm{
    
    @Column()
    cargoFuncao: string;
-      
+
+   @Column()
+   anoLetivo: number;
+ 
    @Column()
    email: string;
 

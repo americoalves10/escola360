@@ -1,21 +1,21 @@
 import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { Useradm } from './entity/administrativo.entity';
+import { Professor } from './entity/professor.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserDto } from './dto/administrativo.dto';
+import { UserDto } from './dto/professor.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class AdministrativoService {
+export class ProfessorService {
 
    constructor(
-       @InjectRepository(Useradm) private userRepository: Repository<Useradm>,
+       @InjectRepository(Professor) private userRepository: Repository<Professor>,
        private jwtService: JwtService
    ){}
 
-    async create(CreateUserDto: UserDto): Promise<Useradm>{
-       const {matricula, nome, cpf, status, cargoFuncao, anoLetivo, email, password} = CreateUserDto;
+   async create(CreateUserDto: UserDto): Promise<Professor>{
+       const {matricula, nome, cpf, dataAdmissao, status, formacaoAcad, titulacao, email, password} = CreateUserDto;
 
        const userExists = await this.userRepository.findOne({where: {email}});
        if(userExists){
@@ -29,9 +29,10 @@ export class AdministrativoService {
             matricula,
             nome,
             cpf,
+            dataAdmissao,
             status,
-            cargoFuncao,
-            anoLetivo,
+            formacaoAcad,
+            titulacao,
             email,
             password: hashedPassword,
        });
@@ -42,26 +43,23 @@ export class AdministrativoService {
        } catch (error){
            throw new InternalServerErrorException('Erro ao salvar o usuário.')
        }
-    }
+   }
 
-    
-
-
-   findAll(): Promise<Useradm[]>{
+   findAll(): Promise<Professor[]>{
        return this.userRepository.find();
    }
 
-   async findOne(id: number): Promise<Useradm>{
+   async findOne(id: number): Promise<Professor>{
        const user = await this.userRepository.findOneBy({id});
        if(!user){
-           throw new NotFoundException(`Administrativo com o ${id} não encontrado.`)
+           throw new NotFoundException(`Aluno com o id ${id} não encontrado.`)
        }
        return user;
    }
 
-    async update(id: number, updateData: UserDto): Promise<Useradm> {
+    async update(id: number, updateData: UserDto): Promise<Professor> {
         const user = await this.findOne(id);
-        const allowedFields = ["matricula", "nome", "cpf", "status", "cargoFuncao", "anoLetivo", "email", "password"];
+        const allowedFields = ["matricula", "nome", "cpf", "dataAdmissao", "status", "formacaoAcad", "titulacao", "email", "password"];
         
         const sanitizedData: any = {};
 
@@ -82,12 +80,11 @@ export class AdministrativoService {
         this.userRepository.merge(user, sanitizedData);
         return this.userRepository.save(user);
     }
-   
-   
+
    async remove(id: number): Promise<void> {
        const result = await this.userRepository.delete(id);
        if(result.affected === 0){
-           throw new NotFoundException(`Administrativo com o ${id} não encontrado para excluir.`)
+           throw new NotFoundException(`Aluno com o id ${id} não encontrado para excluir.`)
        }
    }
 
