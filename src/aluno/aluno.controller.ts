@@ -11,7 +11,7 @@ export class AlunoController {
    constructor(private readonly alunoService: AlunoService){}
 
 
-   @Post() // /registro
+   @Post('registro') // /registro
    async create(@Body() createUserDto: UserDto){
        return this.alunoService.create(createUserDto);
    }

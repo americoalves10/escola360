@@ -7,7 +7,7 @@ import { Professor } from './entity/professor.entity';
 export class ProfessorController {
   constructor(private readonly professorService: ProfessorService) {}
 
-   @Post() // /registro
+   @Post('registro') // /registro
    async create(@Body() createUserDto: UserDto){
        return this.professorService.create(createUserDto);
    }
