@@ -33,10 +33,10 @@ export class ProfessorController {
        return this.professorService.remove(id);
    }
 
-   @HttpCode(HttpStatus.OK)
-   @Post('login')
-   async login(@Body() loginDto:UserDto){
-       return this.professorService.login(loginDto);
-   }
+    @HttpCode(HttpStatus.OK)
+    @Post('login')
+    async login(@Body() loginDto:UserDto){
+        return this.professorService.login(loginDto);
+    }
 
 }
