@@ -8,7 +8,7 @@ import { Useradm } from './entity/administrativo.entity';
 export class AdministrativoController {
   constructor(private readonly admnistrativoService: AdministrativoService) {}
 
-   @Post() // /registro
+   @Post('registro') // /registro
    async create(@Body() createUserDto: UserDto){
        return this.admnistrativoService.create(createUserDto);
    }
