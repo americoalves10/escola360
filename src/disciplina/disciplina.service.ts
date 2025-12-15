@@ -47,7 +47,10 @@ export class DisciplinaService {
 
     const disciplina = this.disciplinaRepository.create({
       nome: dto.nome,
+      codDisciplina: dto.codDisciplina,
+      status: dto.status,
       cargaHoraria: dto.cargaHoraria,
+      assunto: dto.assunto,
       turma: turma,
       professor: professor,
     });
@@ -106,20 +109,22 @@ export class DisciplinaService {
     }
 
     disciplina.nome = dto.nome ?? disciplina.nome;
-    disciplina.cargaHoraria =
-      dto.cargaHoraria ?? disciplina.cargaHoraria;
+    disciplina.cargaHoraria = dto.cargaHoraria ?? disciplina.cargaHoraria;
+    disciplina.codDisciplina = dto.codDisciplina ?? disciplina.codDisciplina;
+    disciplina.status = dto.status ?? disciplina.status;
+    disciplina.assunto = dto.assunto ?? disciplina.assunto;
 
     return this.disciplinaRepository.save(disciplina);
   }
 
   
-  async remove(id: number): Promise<void> {
-    const result = await this.disciplinaRepository.delete(id);
+  // async remove(id: number): Promise<void> {
+  //   const result = await this.disciplinaRepository.delete(id);
 
-    if (result.affected === 0) {
-      throw new NotFoundException(
-        `Disciplina com ID ${id} não encontrada.`,
-      );
-    }
-  }
+  //   if (result.affected === 0) {
+  //     throw new NotFoundException(
+  //       `Disciplina com ID ${id} não encontrada.`,
+  //     );
+  //   }
+  // }
 }

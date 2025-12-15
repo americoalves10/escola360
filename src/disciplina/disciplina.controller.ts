@@ -17,7 +17,7 @@ export class DisciplinaController {
 
   constructor(private readonly disciplinaService: DisciplinaService) {}
 
-  @Post()
+  @Post('registro')
   create(@Body() dto: DisciplinaDto) {
     return this.disciplinaService.create(dto);
   }
@@ -37,9 +37,9 @@ export class DisciplinaController {
     return this.disciplinaService.update(Number(id), dto);
   }
 
-  @Delete(':id')
-  @HttpCode(204)
-  remove(@Param('id') id: number) {
-    return this.disciplinaService.remove(Number(id));
-  }
+  // @Delete(':id')
+  // @HttpCode(204)
+  // remove(@Param('id') id: number) {
+  //   return this.disciplinaService.remove(Number(id));
+  // }
 }

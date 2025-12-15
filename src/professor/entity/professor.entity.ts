@@ -47,7 +47,7 @@ export class Professor{
 
    @Column()
    password: string;
-   disciplina: any;
+   
 
 
 }

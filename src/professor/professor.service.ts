@@ -52,13 +52,19 @@ export class ProfessorService {
     const senhaHash = await bcrypt.hash(dto.password, 10);
 
     const professor = this.professorRepository.create({
+      matricula: dto.matricula,
       nome: dto.nome,
       cpf: dto.cpf,
-      disciplina: dto.disciplina,
+      dataAdmissao: dto.dataAdmissao,
       status: dto.status,
+      turma: turma, // 🔥 relação
+      formacaoAcad: dto.formacaoAcad, 
+      titulacao: dto.titulacao,
+      deficiencia: dto.deficiencia,
+      tipoDeficiencia: dto.tipoDeficiencia,
       email: dto.email,
       password: senhaHash,
-      turma: turma, // 🔥 relação
+      
     });
 
     try {
@@ -108,7 +114,6 @@ export class ProfessorService {
 
     professor.nome = dto.nome ?? professor.nome;
     professor.cpf = dto.cpf ?? professor.cpf;
-    professor.disciplina = dto.disciplina ?? professor.disciplina;
     professor.status = dto.status ?? professor.status;
     professor.email = dto.email ?? professor.email;
 

@@ -31,20 +31,27 @@ export class TurmaService {
     return turma;
   }
 
-
-//    async update(id: number, updateData: TurmaDto): Promise<Turma> {
-//       const user = await this.findOne(id);
-//       const allowedFields = ["nome", "turno", "id_aluno", "id_professor", "id_disciplina"];
+  async update(id: number, dto: TurmaDto): Promise<Turma> {
+      const turma = await this.findOne(id);
+  
+      if (id) {
+        const turma = await this.userRepository.findOne({
+          where: { id: id},
+        });
+        if (!turma) {
+          throw new NotFoundException('Turma não encontrada.');
+        }
+        turma.id = id;
+      }
+  
+      turma.nome = dto.nome ?? turma.nome;
+      turma.turno = dto.turno ?? turma.turno;
       
-//       const sanitizedData: any = {};
+  
+      return this.userRepository.save(turma);
+    }
 
-//       // Garante que não entram campos inesperados
-//       for (const key of Object.keys(updateData)) {
-//         if (allowedFields.includes(key)) {sanitizedData[key] = updateData[key];}
-//       }
-//       this.userRepository.merge(user, sanitizedData);
-//       return this.userRepository.save(user);
-//    }
+
 
 //    async remove(id: number): Promise<void> {
 //       const result = await this.userRepository.delete(id);

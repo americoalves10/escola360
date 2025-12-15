@@ -22,10 +22,10 @@ export class TurmaController {
        return this.turmaService.findOne(id);
    }
    
-//    @Patch(':id')
-//    update(@Param('id') id: number, @Body() updateDto: TurmaDto): Promise<Turma>{
-//        return this.turmaService.update(id, updateDto);
-//    }
+    @Patch(':id')
+    update(@Param('id') id: number, @Body() updateDto: TurmaDto): Promise<Turma>{
+        return this.turmaService.update(id, updateDto);
+    }
 
 //    @Delete(':id')
 //    @HttpCode(204)
