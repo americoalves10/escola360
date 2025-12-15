@@ -7,6 +7,8 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
 import { AdministrativoModule } from './administrativo/administrativo.module';
 import { ProfessorModule } from './professor/professor.module';
 import { LoginModule } from './login/login.module';
+import { TurmaModule } from './turma/turma.module';
+import { DisciplinaModule } from './disciplina/disciplina.module';
 
 @Module({
  imports: [
@@ -33,6 +35,8 @@ import { LoginModule } from './login/login.module';
    AdministrativoModule,
    ProfessorModule,
    LoginModule,
+   TurmaModule,
+   DisciplinaModule,
  ],
  controllers: [AppController],
  providers: [AppService],

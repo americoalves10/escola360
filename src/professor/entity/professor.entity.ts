@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Disciplina } from "src/disciplina/entity/disciplina.entity";
+import { Turma } from "src/turma/entity/turma.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 
 @Entity()
@@ -29,12 +31,23 @@ export class Professor{
 
    @Column()
    titulacao: string;
+   
+   @ManyToOne(() => Turma, { eager: true })
+   @JoinColumn({ name: 'id_turma' })
+   turma: Turma;
+
+   @Column()
+   deficiencia: string;
+   
+   @Column()
+   tipoDeficiencia: string;
 
    @Column()
    email: string;
 
    @Column()
    password: string;
+   disciplina: any;
 
 
 }

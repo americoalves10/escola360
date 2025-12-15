@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Get, Patch, Delete, Param } from '@nestjs/common';
 import { ProfessorService } from './professor.service';
-import { UserDto } from './dto/professor.dto';
+import { ProfessorDto } from './dto/professor.dto';
 import { Professor } from './entity/professor.entity';
 
 @Controller('professor')
@@ -8,7 +8,7 @@ export class ProfessorController {
   constructor(private readonly professorService: ProfessorService) {}
 
    @Post('registro') // /registro
-   async create(@Body() createUserDto: UserDto){
+   async create(@Body() createUserDto: ProfessorDto){
        return this.professorService.create(createUserDto);
    }
 
@@ -23,7 +23,7 @@ export class ProfessorController {
    }
    
    @Patch(':id')
-   update(@Param('id') id: number, @Body() updateDto: UserDto): Promise<Professor>{
+   update(@Param('id') id: number, @Body() updateDto: ProfessorDto): Promise<Professor>{
        return this.professorService.update(id, updateDto);
    }
 
@@ -35,7 +35,7 @@ export class ProfessorController {
 
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    async login(@Body() loginDto:UserDto){
+    async login(@Body() loginDto:ProfessorDto){
         return this.professorService.login(loginDto);
     }
 

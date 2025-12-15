@@ -1,117 +1,163 @@
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { Professor } from './entity/professor.entity';
-import { Repository } from 'typeorm';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserDto } from './dto/professor.dto';
+import { Repository } from 'typeorm';
+
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+
+import { Professor } from './entity/professor.entity';
+import { ProfessorDto } from './dto/professor.dto';
+import { Turma } from 'src/turma/entity/turma.entity';
 
 @Injectable()
 export class ProfessorService {
 
-   constructor(
-       @InjectRepository(Professor) private userRepository: Repository<Professor>,
-       private jwtService: JwtService
-   ){}
+  constructor(
+    @InjectRepository(Professor)
+    private readonly professorRepository: Repository<Professor>,
 
-   async create(CreateUserDto: UserDto): Promise<Professor>{
-       const {matricula, nome, cpf, dataAdmissao, status, formacaoAcad, titulacao, email, password} = CreateUserDto;
+    @InjectRepository(Turma)
+    private readonly turmaRepository: Repository<Turma>,
 
-       const userExists = await this.userRepository.findOne({where: {email}});
-       if(userExists){
-           throw new ConflictException('Este e-mail já está em uso.')
-       }
+    private readonly jwtService: JwtService,
+  ) {}
 
-       const salt = await bcrypt.genSalt();
-       const hashedPassword = await bcrypt.hash(password, salt);
+  
+  async create(dto: ProfessorDto): Promise<Professor> {
 
-       const user = this.userRepository.create({
-            matricula,
-            nome,
-            cpf,
-            dataAdmissao,
-            status,
-            formacaoAcad,
-            titulacao,
-            email,
-            password: hashedPassword,
-       });
+    // const emailExiste = await this.professorRepository.findOne({
+    //   where: { email: dto.email },
+    // });
 
-       try {
-           await this.userRepository.save(user);
-           return user;
-       } catch (error){
-           throw new InternalServerErrorException('Erro ao salvar o usuário.')
-       }
-   }
+    // if (emailExiste) {
+    //   throw new ConflictException('Este e-mail já está em uso.');
+    // }
 
-   findAll(): Promise<Professor[]>{
-       return this.userRepository.find();
-   }
+    // Busca turma
+    const turma = await this.turmaRepository.findOne({
+      where: { id: dto.id_turma },
+    });
 
-   async findOne(id: number): Promise<Professor>{
-       const user = await this.userRepository.findOneBy({id});
-       if(!user){
-           throw new NotFoundException(`Aluno com o id ${id} não encontrado.`)
-       }
-       return user;
-   }
-
-    async update(id: number, updateData: UserDto): Promise<Professor> {
-        const user = await this.findOne(id);
-        const allowedFields = ["matricula", "nome", "cpf", "dataAdmissao", "status", "formacaoAcad", "titulacao", "email", "password"];
-        
-        const sanitizedData: any = {};
-
-            // Garante que não entram campos inesperados
-            for (const key of Object.keys(updateData)) {
-                if (allowedFields.includes(key)) {
-                    sanitizedData[key] = updateData[key];
-                }
-            }
-
-            // Gerir password
-            if (sanitizedData.password) {
-                sanitizedData.password = await bcrypt.hash(sanitizedData.password, 10);
-            } else {
-                delete sanitizedData.password;
-            }
-
-        this.userRepository.merge(user, sanitizedData);
-        return this.userRepository.save(user);
+    if (!turma) {
+      throw new NotFoundException('Turma não encontrada.');
     }
 
-   async remove(id: number): Promise<void> {
-       const result = await this.userRepository.delete(id);
-       if(result.affected === 0){
-           throw new NotFoundException(`Aluno com o id ${id} não encontrado para excluir.`)
-       }
-   }
+    const senhaHash = await bcrypt.hash(dto.password, 10);
 
-   async login(loginDto: UserDto): Promise<{access_token:string}>{
-       const {email,password} = loginDto;
+    const professor = this.professorRepository.create({
+      nome: dto.nome,
+      cpf: dto.cpf,
+      disciplina: dto.disciplina,
+      status: dto.status,
+      email: dto.email,
+      password: senhaHash,
+      turma: turma, // 🔥 relação
+    });
 
-       const user = await this.userRepository.findOne({where: {email}});
+    try {
+      return await this.professorRepository.save(professor);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Erro ao salvar o professor.',
+      );
+    }
+  }
 
-       if(!user){
-           throw new UnauthorizedException('Credenciais inválidas');
-       }
+  
+  findAll(): Promise<Professor[]> {
+    return this.professorRepository.find();
+  }
 
-       const isPasswordMatching = await bcrypt.compare(password,user.password);
+  
+  async findOne(id: number): Promise<Professor> {
+    const professor = await this.professorRepository.findOne({
+      where: { id },
+    });
 
-       if(!isPasswordMatching){
-           throw new UnauthorizedException('Credenciais inválidas');
-       }
+    if (!professor) {
+      throw new NotFoundException(
+        `Professor com ID ${id} não encontrado.`,
+      );
+    }
 
-       const payload = {
-           sub: user.id,
-           email: user.email
-       };
+    return professor;
+  }
 
-       const accesstoken = await this.jwtService.signAsync(payload);
+  
+  async update(id: number, dto: ProfessorDto): Promise<Professor> {
+    const professor = await this.findOne(id);
 
-       return{
-           access_token:accesstoken
-       };
-   }
+    if (dto.id_turma) {
+      const turma = await this.turmaRepository.findOne({
+        where: { id: dto.id_turma },
+      });
+
+      if (!turma) {
+        throw new NotFoundException('Turma não encontrada.');
+      }
+
+      professor.turma = turma;
+    }
+
+    professor.nome = dto.nome ?? professor.nome;
+    professor.cpf = dto.cpf ?? professor.cpf;
+    professor.disciplina = dto.disciplina ?? professor.disciplina;
+    professor.status = dto.status ?? professor.status;
+    professor.email = dto.email ?? professor.email;
+
+    if (dto.password) {
+      professor.password = await bcrypt.hash(dto.password, 10);
+    }
+
+    return this.professorRepository.save(professor);
+  }
+
+  
+  async remove(id: number): Promise<void> {
+    const result = await this.professorRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `Professor com ID ${id} não encontrado.`,
+      );
+    }
+  }
+
+  
+  async login(dto: ProfessorDto): Promise<{ access_token: string }> {
+
+    const professor = await this.professorRepository.findOne({
+      where: { email: dto.email },
+    });
+
+    if (!professor) {
+      throw new UnauthorizedException('Credenciais inválidas.');
+    }
+
+    const senhaConfere = await bcrypt.compare(
+      dto.password,
+      professor.password,
+    );
+
+    if (!senhaConfere) {
+      throw new UnauthorizedException('Credenciais inválidas.');
+    }
+
+    const payload = {
+      sub: professor.id,
+      email: professor.email,
+      role: 'professor',
+    };
+
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
+  }
 }

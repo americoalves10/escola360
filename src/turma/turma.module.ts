@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ProfessorService } from './professor.service';
-import { ProfessorController } from './professor.controller';
+import { TurmaService } from './turma.service';
+import { TurmaController } from './turma.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Professor } from './entity/professor.entity';
+import { Turma } from './entity/turma.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Turma } from 'src/turma/entity/turma.entity';
 
 @Module({
-imports: [TypeOrmModule.forFeature([Professor, Turma]),
+imports: [TypeOrmModule.forFeature([Turma]),
  JwtModule.registerAsync({
    imports: [ConfigModule],
    inject: [ConfigService],
@@ -18,7 +17,8 @@ imports: [TypeOrmModule.forFeature([Professor, Turma]),
    })
  })
 ],  
-  controllers: [ProfessorController],
-  providers: [ProfessorService],
+  controllers: [TurmaController],
+  providers: [TurmaService],
 })
-export class ProfessorModule {}
+export class TurmaModule {}
+

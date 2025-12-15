@@ -15,7 +15,7 @@ export class AdministrativoService {
    ){}
 
     async create(CreateUserDto: UserDto): Promise<Useradm>{
-       const {matricula, nome, cpf, status, cargoFuncao, anoLetivo, email, password} = CreateUserDto;
+       const {matricula, nome, cpf, status, dataNasc, email, password} = CreateUserDto;
 
        const userExists = await this.userRepository.findOne({where: {email}});
        if(userExists){
@@ -30,8 +30,7 @@ export class AdministrativoService {
             nome,
             cpf,
             status,
-            cargoFuncao,
-            anoLetivo,
+            dataNasc,
             email,
             password: hashedPassword,
        });
@@ -61,7 +60,7 @@ export class AdministrativoService {
 
     async update(id: number, updateData: UserDto): Promise<Useradm> {
         const user = await this.findOne(id);
-        const allowedFields = ["matricula", "nome", "cpf", "status", "cargoFuncao", "anoLetivo", "email", "password"];
+        const allowedFields = ["matricula", "nome", "cpf", "status", "dataNasc", "email", "password"];
         
         const sanitizedData: any = {};
 

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Turma } from "src/turma/entity/turma.entity";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 
 @Entity()
@@ -24,11 +25,15 @@ export class User{
    @Column()
    status: string;
    
-   @Column()
-   turma: string;
+   @ManyToOne(() => Turma, { eager: true })
+   @JoinColumn({ name: 'id_turma' })
+   turma: Turma;
 
    @Column()
-   anoLetivo: number;
+   deficiencia: string;
+
+   @Column()
+   tipoDeficiencia: string;
 
    @Column()
    email: string;

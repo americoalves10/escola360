@@ -1,15 +1,21 @@
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 
 
-export class UserDto{
+export class ProfessorDto{
 
    matricula: string;
    nome: string;
    cpf: string;
    dataAdmissao: Date;
    status: string;
+   
+   @IsNotEmpty()
+   id_turma: number;
+   
    formacaoAcad: string;
    titulacao: string;
+   deficiencia: string;
+   tipoDeficiencia: string;
    
    @IsNotEmpty({message:'O e-mail não pode ser vazio.'})
    @IsEmail({},{message:'forneça um e-mail válido.'})
@@ -19,6 +25,7 @@ export class UserDto{
    @IsNotEmpty({message: 'A senha não pode ser vazia.'})
    @MinLength(6,{message: 'A senha deve ter no mínimo 6 caracteres.'})
    password: string;
+   disciplina: any;
 }
 
 

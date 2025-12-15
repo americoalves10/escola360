@@ -8,8 +8,9 @@ export class UserDto{
    cpf: string;
    dataNasc: Date;
    status: string;
-   turma: string;
-   anoLetivo: number;
+   id_turma: number;
+   deficiencia: string;
+   tipoDeficiencia: string;
    
    @IsNotEmpty({message:'O e-mail não pode ser vazio.'})
    @IsEmail({},{message:'forneça um e-mail válido.'})

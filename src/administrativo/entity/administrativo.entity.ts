@@ -22,11 +22,8 @@ export class Useradm{
    status: string;
    
    @Column()
-   cargoFuncao: string;
+   dataNasc: Date;
 
-   @Column()
-   anoLetivo: number;
- 
    @Column()
    email: string;
 

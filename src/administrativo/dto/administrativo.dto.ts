@@ -7,9 +7,8 @@ export class UserDto{
    nome: string;
    cpf: string;
    status: string;
-   cargoFuncao: string;
-   anoLetivo: number
-   
+   dataNasc: Date;
+      
    @IsNotEmpty({message:'O e-mail não pode ser vazio.'})
    @IsEmail({},{message:'forneça um e-mail válido.'})
    email: string;
