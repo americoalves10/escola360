@@ -4,7 +4,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, Primar
 
 
 @Entity()
-@Unique(['email', 'cpf', 'matricula'])
+//@Unique(['email', 'cpf', 'matricula'])
 export class Professor{
 
 

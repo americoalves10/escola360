@@ -49,6 +49,10 @@ export class ProfessorService {
       throw new NotFoundException('Turma não encontrada.');
     }
 
+    if (!dto.matricula) {
+      throw new NotFoundException('Matricula não encontrada.');
+    }
+
     const senhaHash = await bcrypt.hash(dto.password, 10);
 
     const professor = this.professorRepository.create({

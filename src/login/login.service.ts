@@ -28,7 +28,9 @@ export class LoginService {
     if (aluno && await compare(senha, aluno.password)) {
       return {
         access_token: this.jwtService.sign({ sub: aluno.id, role: 'aluno' }),
-        role: 'aluno'
+        role: 'aluno',
+        id: aluno.id,
+        nome: aluno.nome,        
       };
     }
 
@@ -37,7 +39,9 @@ export class LoginService {
     if (professor && await compare(senha, professor.password)) {
       return {
         access_token: this.jwtService.sign({ sub: professor.id, role: 'professor' }),
-        role: 'professor'
+        role: 'professor',
+        id: professor.id,
+        nome: professor.nome,
       };
     }
 
@@ -46,7 +50,9 @@ export class LoginService {
     if (admin && await compare(senha, admin.password)) {
       return {
         access_token: this.jwtService.sign({ sub: admin.id, role: 'coordenador' }),
-        role: 'coordenador'
+        role: 'coordenador',
+        id: admin.id,
+        nome: admin.nome,
       };
     }
 
