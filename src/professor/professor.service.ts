@@ -1,17 +1,8 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
-
+import {ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException, } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-
 import { Professor } from './entity/professor.entity';
 import { ProfessorDto } from './dto/professor.dto';
 import { Turma } from 'src/turma/entity/turma.entity';
@@ -22,36 +13,11 @@ export class ProfessorService {
   constructor(
     @InjectRepository(Professor)
     private readonly professorRepository: Repository<Professor>,
-
-    @InjectRepository(Turma)
-    private readonly turmaRepository: Repository<Turma>,
-
+    
     private readonly jwtService: JwtService,
   ) {}
-
   
   async create(dto: ProfessorDto): Promise<Professor> {
-
-    // const emailExiste = await this.professorRepository.findOne({
-    //   where: { email: dto.email },
-    // });
-
-    // if (emailExiste) {
-    //   throw new ConflictException('Este e-mail já está em uso.');
-    // }
-
-    // Busca turma
-    const turma = await this.turmaRepository.findOne({
-      where: { id: dto.id_turma },
-    });
-
-    if (!turma) {
-      throw new NotFoundException('Turma não encontrada.');
-    }
-
-    if (!dto.matricula) {
-      throw new NotFoundException('Matricula não encontrada.');
-    }
 
     const senhaHash = await bcrypt.hash(dto.password, 10);
 
@@ -60,8 +26,7 @@ export class ProfessorService {
       nome: dto.nome,
       cpf: dto.cpf,
       dataAdmissao: dto.dataAdmissao,
-      status: dto.status,
-      turma: turma, // 🔥 relação
+      status: dto.status,   
       formacaoAcad: dto.formacaoAcad, 
       titulacao: dto.titulacao,
       deficiencia: dto.deficiencia,
@@ -99,26 +64,18 @@ export class ProfessorService {
 
     return professor;
   }
-
   
   async update(id: number, dto: ProfessorDto): Promise<Professor> {
     const professor = await this.findOne(id);
 
-    if (dto.id_turma) {
-      const turma = await this.turmaRepository.findOne({
-        where: { id: dto.id_turma },
-      });
-
-      if (!turma) {
-        throw new NotFoundException('Turma não encontrada.');
-      }
-
-      professor.turma = turma;
-    }
-
     professor.nome = dto.nome ?? professor.nome;
     professor.cpf = dto.cpf ?? professor.cpf;
+    professor.dataAdmissao = dto.dataAdmissao ?? professor.dataAdmissao;
     professor.status = dto.status ?? professor.status;
+    professor.formacaoAcad = dto.formacaoAcad ?? professor.formacaoAcad; 
+    professor.titulacao = dto.titulacao ?? professor.titulacao;
+    professor.deficiencia = dto.deficiencia ?? professor.deficiencia;
+    professor.tipoDeficiencia = dto.tipoDeficiencia ?? professor.tipoDeficiencia;
     professor.email = dto.email ?? professor.email;
 
     if (dto.password) {
@@ -129,15 +86,15 @@ export class ProfessorService {
   }
 
   
-  async remove(id: number): Promise<void> {
-    const result = await this.professorRepository.delete(id);
+  // async remove(id: number): Promise<void> {
+  //   const result = await this.professorRepository.delete(id);
 
-    if (result.affected === 0) {
-      throw new NotFoundException(
-        `Professor com ID ${id} não encontrado.`,
-      );
-    }
-  }
+  //   if (result.affected === 0) {
+  //     throw new NotFoundException(
+  //       `Professor com ID ${id} não encontrado.`,
+  //     );
+  //   }
+  // }
 
   
   async login(dto: ProfessorDto): Promise<{ access_token: string }> {

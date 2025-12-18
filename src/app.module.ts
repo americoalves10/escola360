@@ -9,6 +9,8 @@ import { ProfessorModule } from './professor/professor.module';
 import { LoginModule } from './login/login.module';
 import { TurmaModule } from './turma/turma.module';
 import { DisciplinaModule } from './disciplina/disciplina.module';
+import { TurmaProfessorModule } from './turma-professor-disciplina/turma-professor-disciplina.module';
+import { MatriculaModule } from './matricula/matricula.module';
 
 @Module({
  imports: [
@@ -37,6 +39,8 @@ import { DisciplinaModule } from './disciplina/disciplina.module';
    LoginModule,
    TurmaModule,
    DisciplinaModule,
+   TurmaProfessorModule,
+   MatriculaModule,
  ],
  controllers: [AppController],
  providers: [AppService],

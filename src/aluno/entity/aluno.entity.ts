@@ -3,9 +3,8 @@ import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn, Prima
 
 
 @Entity()
-@Unique(['email', 'cpf', 'matricula'])
-export class User{
 
+export class User{
 
    @PrimaryGeneratedColumn() 
    id: number;
@@ -24,11 +23,7 @@ export class User{
    
    @Column()
    status: string;
-   
-   @ManyToOne(() => Turma, { eager: true })
-   @JoinColumn({ name: 'id_turma' })
-   turma: Turma;
-
+      
    @Column()
    deficiencia: string;
 
@@ -40,6 +35,5 @@ export class User{
 
    @Column()
    password: string;
-
 
 }

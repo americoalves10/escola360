@@ -21,13 +21,5 @@ export class Disciplina {
 
   @Column()
   assunto: string;
-
-  @ManyToOne(() => Turma, { eager: true })
-  @JoinColumn({ name: 'id_turma' })
-  turma: Turma;
-
-  @ManyToOne(() => Professor, { eager: true })
-  @JoinColumn({ name: 'id_professor' })
-  professor: Professor;
-
+  
 }

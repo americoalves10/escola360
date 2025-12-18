@@ -1,12 +1,6 @@
-import {
-  Injectable,
-  NotFoundException,
-  InternalServerErrorException,
-} from '@nestjs/common';
-
+import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import { Disciplina } from './entity/disciplina.entity';
 import { DisciplinaDto } from './dto/disciplina.dto';
 import { Turma } from 'src/turma/entity/turma.entity';
@@ -29,30 +23,13 @@ export class DisciplinaService {
   
   async create(dto: DisciplinaDto): Promise<Disciplina> {
 
-    const turma = await this.turmaRepository.findOne({
-      where: { id: dto.id_turma },
-    });
-
-    if (!turma) {
-      throw new NotFoundException('Turma não encontrada.');
-    }
-
-    const professor = await this.professorRepository.findOne({
-      where: { id: dto.id_professor },
-    });
-
-    if (!professor) {
-      throw new NotFoundException('Professor não encontrado.');
-    }
-
     const disciplina = this.disciplinaRepository.create({
       nome: dto.nome,
       codDisciplina: dto.codDisciplina,
       status: dto.status,
       cargaHoraria: dto.cargaHoraria,
       assunto: dto.assunto,
-      turma: turma,
-      professor: professor,
+      
     });
 
     try {
@@ -87,26 +64,6 @@ export class DisciplinaService {
   
   async update(id: number, dto: DisciplinaDto): Promise<Disciplina> {
     const disciplina = await this.findOne(id);
-
-    if (dto.id_turma) {
-      const turma = await this.turmaRepository.findOne({
-        where: { id: dto.id_turma },
-      });
-      if (!turma) {
-        throw new NotFoundException('Turma não encontrada.');
-      }
-      disciplina.turma = turma;
-    }
-
-    if (dto.id_professor) {
-      const professor = await this.professorRepository.findOne({
-        where: { id: dto.id_professor },
-      });
-      if (!professor) {
-        throw new NotFoundException('Professor não encontrado.');
-      }
-      disciplina.professor = professor;
-    }
 
     disciplina.nome = dto.nome ?? disciplina.nome;
     disciplina.cargaHoraria = dto.cargaHoraria ?? disciplina.cargaHoraria;

@@ -7,8 +7,7 @@ export class UserDto{
    nome: string;
    cpf: string;
    dataNasc: Date;
-   status: string;
-   id_turma: number;
+   status: string;   
    deficiencia: string;
    tipoDeficiencia: string;
    

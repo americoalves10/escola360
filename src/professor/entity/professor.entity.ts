@@ -1,12 +1,10 @@
-import { Disciplina } from "src/disciplina/entity/disciplina.entity";
-import { Turma } from "src/turma/entity/turma.entity";
+// import { Disciplina } from "src/disciplina/entity/disciplina.entity";
+// import { Turma } from "src/turma/entity/turma.entity";
+// import { ProfessorTurma } from "src/turma-professor-disciplina/entity/turmaProfessorDisciplina.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
 
-
 @Entity()
-//@Unique(['email', 'cpf', 'matricula'])
 export class Professor{
-
 
    @PrimaryGeneratedColumn() 
    id: number;
@@ -32,10 +30,6 @@ export class Professor{
    @Column()
    titulacao: string;
    
-   @ManyToOne(() => Turma, { eager: true })
-   @JoinColumn({ name: 'id_turma' })
-   turma: Turma;
-
    @Column()
    deficiencia: string;
    
@@ -46,8 +40,6 @@ export class Professor{
    email: string;
 
    @Column()
-   password: string;
-   
-
+   password: string; 
 
 }

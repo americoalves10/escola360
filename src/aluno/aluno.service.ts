@@ -1,29 +1,16 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
-
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-
 import { User } from './entity/aluno.entity';
 import { UserDto } from './dto/aluno.dto';
-import { Turma } from 'src/turma/entity/turma.entity';
 
 @Injectable()
 export class AlunoService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-
-    @InjectRepository(Turma)
-    private readonly turmaRepository: Repository<Turma>,
 
     private readonly jwtService: JwtService,
   ) {}
@@ -35,8 +22,7 @@ export class AlunoService {
       nome,
       cpf,
       dataNasc,
-      status,
-      id_turma,
+      status,      
       deficiencia,
       tipoDeficiencia,
       email,
@@ -50,16 +36,7 @@ export class AlunoService {
 
     if (emailExiste) {
       throw new ConflictException('Este e-mail já está em uso.');
-    }
-
-    // 2️⃣ Busca a turma pelo ID recebido no DTO
-    const turma = await this.turmaRepository.findOne({
-      where: { id: id_turma },
-    });
-
-    if (!turma) {
-      throw new NotFoundException('Turma não encontrada.');
-    }
+    }    
 
     // 3️⃣ Criptografa a senha
     const salt = await bcrypt.genSalt();
@@ -76,7 +53,7 @@ export class AlunoService {
       tipoDeficiencia,
       email,
       password: senhaCriptografada,
-      turma: turma, // 🔥 RELAÇÃO AQUI
+     
     });
 
     // 5️⃣ Salva no banco
@@ -89,11 +66,9 @@ export class AlunoService {
     }
   }
 
-  
   findAll(): Promise<User[]> {
     return this.userRepository.find(); // eager carrega a turma
   }
-
   
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({
@@ -103,26 +78,12 @@ export class AlunoService {
     if (!user) {
       throw new NotFoundException(`Aluno com ID ${id} não encontrado.`);
     }
-
     return user;
   }
 
   
   async update(id: number, dto: UserDto): Promise<User> {
     const user = await this.findOne(id);
-
-    // Se mudar a turma
-    if (dto.id_turma) {
-      const turma = await this.turmaRepository.findOne({
-        where: { id: dto.id_turma },
-      });
-
-      if (!turma) {
-        throw new NotFoundException('Turma não encontrada.');
-      }
-
-      user.turma = turma;
-    }
 
     // Atualiza campos simples
     user.matricula = dto.matricula ?? user.matricula;
@@ -143,13 +104,13 @@ export class AlunoService {
   }
 
   
-  async remove(id: number): Promise<void> {
-    const result = await this.userRepository.delete(id);
+  // async remove(id: number): Promise<void> {
+  //   const result = await this.userRepository.delete(id);
 
-    if (result.affected === 0) {
-      throw new NotFoundException(`Aluno com ID ${id} não encontrado.`);
-    }
-  }
+  //   if (result.affected === 0) {
+  //     throw new NotFoundException(`Aluno com ID ${id} não encontrado.`);
+  //   }
+  // }
 
   
   async login(dto: UserDto): Promise<{ access_token: string }> {

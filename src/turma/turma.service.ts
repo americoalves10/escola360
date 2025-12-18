@@ -10,21 +10,21 @@ import { JwtService } from '@nestjs/jwt';
 export class TurmaService {
 
    constructor(
-       @InjectRepository(Turma) private userRepository: Repository<Turma>,
+       @InjectRepository(Turma) private turmaRepository: Repository<Turma>,
        private jwtService: JwtService
    ){}
 
    create(dto: TurmaDto): Promise<Turma> {
-    const turma = this.userRepository.create(dto);
-    return this.userRepository.save(turma);
+    const turma = this.turmaRepository.create(dto);
+    return this.turmaRepository.save(turma);
   }
 
    findAll(): Promise<Turma[]>{
-       return this.userRepository.find();
+       return this.turmaRepository.find();
    }
 
    async findOne(id: number): Promise<Turma> {
-    const turma = await this.userRepository.findOneBy({ id });
+    const turma = await this.turmaRepository.findOneBy({ id });
     if (!turma) {
       throw new NotFoundException('Turma não encontrada');
     }
@@ -35,7 +35,7 @@ export class TurmaService {
       const turma = await this.findOne(id);
   
       if (id) {
-        const turma = await this.userRepository.findOne({
+        const turma = await this.turmaRepository.findOne({
           where: { id: id},
         });
         if (!turma) {
@@ -48,7 +48,7 @@ export class TurmaService {
       turma.turno = dto.turno ?? turma.turno;
       
   
-      return this.userRepository.save(turma);
+      return this.turmaRepository.save(turma);
     }
 
 

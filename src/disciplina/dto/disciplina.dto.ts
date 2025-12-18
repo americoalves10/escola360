@@ -15,11 +15,5 @@ export class DisciplinaDto {
     
     @IsNotEmpty()
     assunto: string;
-
-    @IsNotEmpty()
-    id_turma: number;
-
-    @IsNotEmpty()
-    id_professor: number;
-
+    
 }

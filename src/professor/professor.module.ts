@@ -5,10 +5,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Professor } from './entity/professor.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Turma } from 'src/turma/entity/turma.entity';
+
 
 @Module({
-imports: [TypeOrmModule.forFeature([Professor, Turma]),
+imports: [TypeOrmModule.forFeature([Professor]),
  JwtModule.registerAsync({
    imports: [ConfigModule],
    inject: [ConfigService],
