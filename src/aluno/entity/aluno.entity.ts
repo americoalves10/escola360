@@ -1,11 +1,8 @@
-import { Turma } from "src/turma/entity/turma.entity";
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
 
-
-@Entity()
-
-export class User{
-
+@Entity('aluno') // Nome explícito da tabela
+@Unique("unique_aluno_matricula", ["matricula"])
+export class Aluno { // Renomeado de User para Aluno
    @PrimaryGeneratedColumn() 
    id: number;
 
@@ -35,5 +32,4 @@ export class User{
 
    @Column()
    password: string;
-
 }

@@ -3,20 +3,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { User } from './entity/aluno.entity';
+import { Aluno } from './entity/aluno.entity';
 import { UserDto } from './dto/aluno.dto';
 
 @Injectable()
 export class AlunoService {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(Aluno)
+    private readonly userRepository: Repository<Aluno>,
 
     private readonly jwtService: JwtService,
   ) {}
 
   
-  async create(dto: UserDto): Promise<User> {
+  async create(dto: UserDto): Promise<Aluno> {
     const {
       matricula,
       nome,
@@ -66,11 +66,11 @@ export class AlunoService {
     }
   }
 
-  findAll(): Promise<User[]> {
+  findAll(): Promise<Aluno[]> {
     return this.userRepository.find(); // eager carrega a turma
   }
   
-  async findOne(id: number): Promise<User> {
+  async findOne(id: number): Promise<Aluno> {
     const user = await this.userRepository.findOne({
       where: { id },
     });
@@ -82,7 +82,7 @@ export class AlunoService {
   }
 
   
-  async update(id: number, dto: UserDto): Promise<User> {
+  async update(id: number, dto: UserDto): Promise<Aluno> {
     const user = await this.findOne(id);
 
     // Atualiza campos simples

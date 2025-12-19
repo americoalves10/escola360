@@ -9,7 +9,7 @@ import { ProfessorModule } from './professor/professor.module';
 import { LoginModule } from './login/login.module';
 import { TurmaModule } from './turma/turma.module';
 import { DisciplinaModule } from './disciplina/disciplina.module';
-import { TurmaProfessorModule } from './turma-professor-disciplina/turma-professor-disciplina.module';
+import { TurmaProfessorDisciplinaModule } from './turma-professor-disciplina/turma-professor-disciplina.module';
 import { MatriculaModule } from './matricula/matricula.module';
 import { MatriculaDisciplinaModule } from './matricula-disciplina/matricula-disciplina.module';
 
@@ -40,7 +40,7 @@ import { MatriculaDisciplinaModule } from './matricula-disciplina/matricula-disc
    LoginModule,
    TurmaModule,
    DisciplinaModule,
-   TurmaProfessorModule,
+   TurmaProfessorDisciplinaModule,
    MatriculaModule,
    MatriculaDisciplinaModule,
  ],

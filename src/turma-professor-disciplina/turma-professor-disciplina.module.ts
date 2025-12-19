@@ -23,4 +23,4 @@ imports: [TypeOrmModule.forFeature([TurmaProfessorDisciplina, Professor, Turma, 
   controllers: [TurmaProfessorDisciplinaController],
   providers: [TurmaProfessorDisciplinaService],
 })
-export class TurmaProfessorModule {}
+export class TurmaProfessorDisciplinaModule {}

@@ -3,15 +3,15 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { compare } from 'bcrypt';
 import { Useradm } from 'src/administrativo/entity/administrativo.entity';
-import { User } from 'src/aluno/entity/aluno.entity';
+import { Aluno } from 'src/aluno/entity/aluno.entity';
 import { Professor } from 'src/professor/entity/professor.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class LoginService {
     constructor(
-    @InjectRepository(User)
-    private alunoRepo: Repository<User>,
+    @InjectRepository(Aluno)
+    private alunoRepo: Repository<Aluno>,
 
     @InjectRepository(Professor)
     private professorRepo: Repository<Professor>,

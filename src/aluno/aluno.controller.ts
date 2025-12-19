@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, Get, Patch, Delete, Param } from '@nestjs/common';
 import { AlunoService } from './aluno.service';
 import { UserDto } from './dto/aluno.dto';
-import { User } from './entity/aluno.entity';
+import { Aluno } from './entity/aluno.entity';
 
 
 @Controller('aluno') // /user
@@ -17,17 +17,17 @@ export class AlunoController {
    }
 
    @Get()
-   findAll(): Promise<User[]> {
+   findAll(): Promise<Aluno[]> {
        return this.alunoService.findAll();
    }
 
    @Get(':id')
-   findOne(@Param('id') id: number): Promise<User>{
+   findOne(@Param('id') id: number): Promise<Aluno>{
        return this.alunoService.findOne(id);
    }
 
    @Patch(':id')
-   update(@Param('id') id: number, @Body() updateDto: UserDto): Promise<User>{
+   update(@Param('id') id: number, @Body() updateDto: UserDto): Promise<Aluno>{
        return this.alunoService.update(id, updateDto);
    }
 

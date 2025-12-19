@@ -1,15 +1,6 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
-  Index,
-  Unique,
-  OneToMany,
-  Column,
-} from 'typeorm';
-import { User } from 'src/aluno/entity/aluno.entity';
-import { Turma } from 'src/turma/entity/turma.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, Unique, Index, OneToMany } from "typeorm";
+import { Aluno } from "src/aluno/entity/aluno.entity";
+import { Turma } from "src/turma/entity/turma.entity";
 import { MatriculaDisciplina } from 'src/matricula-disciplina/entity/matriculaDisciplina.entity';
 
 @Entity('matricula')
@@ -21,14 +12,15 @@ export class Matricula {
   id: number;
 
   @Column()
-  anoLetivo: number;
+  anoLetivo: string;
 
-  @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'aluno_id' })
-  aluno: User;
+  // Muitos alunos para uma matrícula (ou vice-versa)
+  @ManyToOne(() => Aluno, { eager: true })
+  @JoinColumn({ name: 'alunoId' }) // Nome da coluna no banco
+  aluno: Aluno;
 
-  @ManyToOne(() => Turma, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'turma_id' })
+  @ManyToOne(() => Turma, { eager: true })
+  @JoinColumn({ name: 'turmaId' })
   turma: Turma;
 
   @OneToMany(
