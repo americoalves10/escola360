@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { User } from "src/aluno/entity/aluno.entity";
 import { TurmaProfessorDisciplina } from "src/turma-professor-disciplina/entity/turmaProfessorDisciplina.entity";
 import { MatriculaDto } from "./dto/matricula.dto";
+import { Turma } from "src/turma/entity/turma.entity";
 
 @Injectable()
 export class MatriculaService {
@@ -15,36 +16,31 @@ export class MatriculaService {
     @InjectRepository(User)
     private alunoRepo: Repository<User>,
 
+    @InjectRepository(Turma)
+    private turmaRepo: Repository<Turma>,
+
     @InjectRepository(TurmaProfessorDisciplina)
     private tpdRepo: Repository<TurmaProfessorDisciplina>,
   ) {}
 
-async matricular(dto: MatriculaDto) {
+async criar(dto: MatriculaDto) {
 
   const aluno = await this.alunoRepo.findOneBy({ id: dto.alunoId });
-  const oferta = await this.tpdRepo.findOneBy({ id: dto.professorTurmaDisciplinaId });
+  const turma = await this.turmaRepo.findOneBy({ id: dto.turmaId });
 
-  if (!aluno || !oferta) {
-    throw new NotFoundException('Aluno ou oferta não encontrada');
+  if (!aluno || !turma) {
+    throw new NotFoundException('Aluno ou turma não encontrados');
   }
 
-  // REGRA DEFINITIVA: aluno só pode ter UMA matrícula
-  const jaMatriculado = await this.repo
-    .createQueryBuilder('m')
-    .where('m.aluno_id = :alunoId', { alunoId: aluno.id })
-    .getOne();
-
-  if (jaMatriculado) {
-    throw new BadRequestException(
-      'O aluno já está matriculado em uma turma'
-    );
-  }
-
-  const matricula = this.repo.create({
-    aluno,
-    turmaProfessorDisciplina: oferta,
+  const jaExiste = await this.repo.findOne({
+    where: { aluno: { id: aluno.id }, turma: { id: turma.id } },
   });
 
+  if (jaExiste) {
+    throw new BadRequestException('Aluno já matriculado nesta turma');
+  }
+
+  const matricula = this.repo.create({ aluno, turma });
   return this.repo.save(matricula);
 }
 

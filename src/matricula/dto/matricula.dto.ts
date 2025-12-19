@@ -1,10 +1,12 @@
-import { IsNotEmpty } from 'class-validator';
-import { Unique } from 'typeorm';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
 export class MatriculaDto {
-  @IsNotEmpty()
+
+  @IsNumber()
   alunoId: number;
 
-  @IsNotEmpty()
-  professorTurmaDisciplinaId: number;
+  @IsNumber()
+  turmaId: number;
 }
+
+

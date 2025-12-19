@@ -11,6 +11,7 @@ import { TurmaModule } from './turma/turma.module';
 import { DisciplinaModule } from './disciplina/disciplina.module';
 import { TurmaProfessorModule } from './turma-professor-disciplina/turma-professor-disciplina.module';
 import { MatriculaModule } from './matricula/matricula.module';
+import { MatriculaDisciplinaModule } from './matricula-disciplina/matricula-disciplina.module';
 
 @Module({
  imports: [
@@ -41,6 +42,7 @@ import { MatriculaModule } from './matricula/matricula.module';
    DisciplinaModule,
    TurmaProfessorModule,
    MatriculaModule,
+   MatriculaDisciplinaModule,
  ],
  controllers: [AppController],
  providers: [AppService],
