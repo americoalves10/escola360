@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsString, IsOptional, MinLength } from "class-validator";
+import { Type } from "class-transformer";
+import { IsEmail, IsNotEmpty, IsString, IsOptional, MinLength, IsDate } from "class-validator";
 
 export class UserDto {
    @IsNotEmpty()
@@ -13,9 +14,9 @@ export class UserDto {
    @IsString()
    cpf: string;
 
-   @IsNotEmpty()
-   // Se for string no JSON, use IsString. Se o Nest converter, use IsDateString
-   dataNasc: Date; 
+   @Type(() => Date)
+   @IsDate()
+   dataNasc: Date;
 
    @IsNotEmpty()
    @IsString()

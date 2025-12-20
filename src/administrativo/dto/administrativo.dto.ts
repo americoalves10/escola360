@@ -1,12 +1,23 @@
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { Type } from "class-transformer";
+import { IsDate, IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
 
 
 export class UserDto{
 
+   @IsString()
    matricula: string;
+
+   @IsString()
    nome: string;
+
+   @IsString()
    cpf: string;
+
+   @IsString()
    status: string;
+
+   @Type(() => Date)
+   @IsDate()
    dataNasc: Date;
       
    @IsNotEmpty({message:'O e-mail não pode ser vazio.'})

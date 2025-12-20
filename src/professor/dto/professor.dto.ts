@@ -1,18 +1,43 @@
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { Type } from "class-transformer";
+import { IsDate, IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
 
 
 export class ProfessorDto{
 
    @IsNotEmpty()
+   @IsString()
    matricula: string;
 
+   @IsNotEmpty()
+   @IsString()
    nome: string;
+   
+   @IsNotEmpty()
+   @IsString()
    cpf: string;
+   
+   @Type(() => Date)
+   @IsDate()
    dataAdmissao: Date;
+   
+   @IsNotEmpty()
+   @IsString()
    status: string;
+   
+   @IsNotEmpty()
+   @IsString()
    formacaoAcad: string;
+   
+   @IsNotEmpty()
+   @IsString()
    titulacao: string;
+   
+   @IsNotEmpty()
+   @IsString()
    deficiencia: string;
+   
+   @IsNotEmpty()
+   @IsString()
    tipoDeficiencia: string;
    
    @IsNotEmpty({message:'O e-mail não pode ser vazio.'})
