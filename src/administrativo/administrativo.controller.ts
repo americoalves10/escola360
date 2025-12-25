@@ -28,16 +28,25 @@ export class AdministrativoController {
        return this.admnistrativoService.update(id, updateDto);
    }
 
-   @Delete(':id')
-   @HttpCode(204)
-   remove(@Param('id') id: number): Promise<void> {
-       return this.admnistrativoService.remove(id);
-   }
+//    @Delete(':id')
+//    @HttpCode(204)
+//    remove(@Param('id') id: number): Promise<void> {
+//        return this.admnistrativoService.remove(id);
+//    }
 
    @HttpCode(HttpStatus.OK)
    @Post('login')
    async login(@Body() loginDto:UserDto){
        return this.admnistrativoService.login(loginDto);
    }
+
+//    Nesse endpoint, apenas é para a senha, mas mudando o trecho do retorno ele pode ser colocado nos outros perfils de usuário(não tenho certeza);
+    @Patch(':id/password')
+    changePassword(
+        @Param('id') id: number,
+        @Body() body: { senhaAtual: string; novaSenha: string }
+    ) {
+        return this.admnistrativoService.changePassword(id, body);
+    }
 
 }

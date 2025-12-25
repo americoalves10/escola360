@@ -96,6 +96,18 @@ export class ProfessorService {
   //   }
   // }
 
+//    esse é o responsável por subistituir a senha hash cadastradas no banco por uma nova, tbm segue o mesmo princípio da outra para os outrs perfis;
+    async changePassword(id: number, data: { senhaAtual: string; novaSenha: string }) {
+        const user = await this.findOne(id);
+
+        const senhaValida = await bcrypt.compare(data.senhaAtual, user.password);
+            if (!senhaValida) {
+                throw new UnauthorizedException('Senha atual inválida');
+            }
+
+        user.password = await bcrypt.hash(data.novaSenha, 10);
+        return this.professorRepository.save(user);
+    } 
   
   async login(dto: ProfessorDto): Promise<{ access_token: string }> {
 

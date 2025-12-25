@@ -43,4 +43,15 @@ export class AlunoController {
        return this.alunoService.login(loginDto);
    }
 
-}
+//    Nesse endpoint, apenas é para a senha, mas mudando o trecho do retorno ele pode ser colocado nos outros perfils de usuário(não tenho certeza);
+    @Patch(':id/password')
+    changePassword(
+        @Param('id') id: number,
+        @Body() body: { senhaAtual: string; novaSenha: string }
+    ) {
+        return this.alunoService.changePassword(id, body);
+    }
+
+}   
+
+

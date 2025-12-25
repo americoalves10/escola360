@@ -81,14 +81,26 @@ export class AdministrativoService {
         this.userRepository.merge(user, sanitizedData);
         return this.userRepository.save(user);
     }
-   
-   
-   async remove(id: number): Promise<void> {
-       const result = await this.userRepository.delete(id);
-       if(result.affected === 0){
-           throw new NotFoundException(`Administrativo com o ${id} não encontrado para excluir.`)
-       }
-   }
+      
+//    async remove(id: number): Promise<void> {
+//        const result = await this.userRepository.delete(id);
+//        if(result.affected === 0){
+//            throw new NotFoundException(`Administrativo com o ${id} não encontrado para excluir.`)
+//        }
+//    }
+
+//    esse é o responsável por subistituir a senha hash cadastradas no banco por uma nova, tbm segue o mesmo princípio da outra para os outrs perfis;
+    async changePassword(id: number, data: { senhaAtual: string; novaSenha: string }) {
+        const user = await this.findOne(id);
+
+        const senhaValida = await bcrypt.compare(data.senhaAtual, user.password);
+            if (!senhaValida) {
+                throw new UnauthorizedException('Senha atual inválida');
+            }
+
+        user.password = await bcrypt.hash(data.novaSenha, 10);
+        return this.userRepository.save(user);
+    }
 
    async login(loginDto: UserDto): Promise<{access_token:string}>{
        const {email,password} = loginDto;
