@@ -23,11 +23,6 @@ export class AdministrativoController {
        return this.admnistrativoService.findOne(id);
    }
 
-//    @Patch(':id')
-//    update(@Param('id') id: number, @Body() updateDto: UserDto): Promise<Useradm>{
-//        return this.admnistrativoService.update(id, updateDto);
-//    }
-
     @Patch(':id')
     update(
     @Param('id') id: number, 
@@ -35,13 +30,7 @@ export class AdministrativoController {
         body: UserDto, 
     ): Promise<Useradm> {
             return this.admnistrativoService.update(id, body);
-    }
-
-    //    @Delete(':id')
-//    @HttpCode(204)
-//    remove(@Param('id') id: number): Promise<void> {
-//        return this.admnistrativoService.remove(id);
-//    }
+    }  
 
    @HttpCode(HttpStatus.OK)
    @Post('login')

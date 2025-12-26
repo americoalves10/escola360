@@ -31,11 +31,6 @@ export class AlunoController {
        return this.alunoService.update(id, updateDto);
    }
 
-//    @Delete(':id')
-//    @HttpCode(204)
-//    remove(@Param('id') id: number): Promise<void> {
-//        return this.alunoService.remove(id);
-//    }
 
    @HttpCode(HttpStatus.OK)
    @Post('login')

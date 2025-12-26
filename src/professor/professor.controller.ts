@@ -27,12 +27,6 @@ export class ProfessorController {
        return this.professorService.update(id, updateDto);
    }
 
-//    @Delete(':id')
-//    @HttpCode(204)
-//    remove(@Param('id') id: number): Promise<void> {
-//        return this.professorService.remove(id);
-//    }
-
     @HttpCode(HttpStatus.OK)
     @Post('login')
     async login(@Body() loginDto:ProfessorDto){
