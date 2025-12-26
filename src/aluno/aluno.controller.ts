@@ -16,6 +16,14 @@ export class AlunoController {
        return this.alunoService.create(createUserDto);
    }
 
+   //informações completa de um alunos
+   @Get('completo/:id')
+        findAlunoCompleto(
+            @Param('id') id: number
+    ) {
+        return this.alunoService.findAlunoCompleto(Number(id));
+    }
+   
    @Get()
    findAll(): Promise<Aluno[]> {
        return this.alunoService.findAll();
@@ -51,9 +59,9 @@ export class AlunoController {
         updateStatus(
             @Param('id') id: number,
             @Body() body: { status: string }
-        ): Promise<Aluno> {
-            return this.alunoService.updateStatus(id, body.status);
-        }
+    ): Promise<Aluno> {
+        return this.alunoService.updateStatus(id, body.status);
+    } 
 
 }   
 

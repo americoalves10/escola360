@@ -55,35 +55,16 @@ export class MatriculaService {
         relations: ['aluno', 'turma'],
       });
   }
+
+  // metodo que retorna as informações de todos alunos da turma
+  async findSomenteAlunosPorTurma(turmaId: number) {
+  const matriculas = await this.repo.find({
+    where: { turma: { id: turmaId } },
+    relations: ['aluno'],
+  });
+
+  return matriculas.map(m => m.aluno);
+  }
+
 }
 
-// // 1. LOG DE ENTRADA: Verifica se o Nest recebeu os IDs do Postman corretamente
-//     console.log('--- DIAGNÓSTICO DE MATRÍCULA ---');
-//     console.log('DTO recebido:', dto);
-//     console.log('Tipo de alunoId:', typeof dto.alunoId); // Deve ser number ou string
-
-//     // 2. BUSCA MANUAL: Tenta buscar pelo ID convertido
-//     const idAluno = Number(dto.alunoId);
-//     const idTurma = Number(dto.turmaId);
-
-//     const aluno = await this.alunoRepo.findOne({ where: { id: idAluno } });
-//     const turma = await this.turmaRepo.findOne({ where: { id: idTurma } });
-
-//     console.log('Resultado Aluno:', aluno ? `Encontrado: ${aluno.nome}` : 'NÃO ENCONTRADO');
-//     console.log('Resultado Turma:', turma ? `Encontrada ID: ${turma.id}` : 'NÃO ENCONTRADA');
-
-//     if (!aluno || !turma) {
-//       // 3. LOG DE VERIFICAÇÃO DE TABELA: Tenta listar o que tem no banco
-//       const todosAlunos = await this.alunoRepo.find({ take: 1 });
-//       console.log('Primeiro aluno do banco para teste:', todosAlunos);
-      
-//       throw new NotFoundException({
-//         mensagem: 'Aluno ou turma não encontrados',
-//         debug: {
-//           idAlunoBuscado: idAluno,
-//           idTurmaBuscada: idTurma,
-//           alunoExiste: !!aluno,
-//           turmaExiste: !!turma
-//         }
-//       });
-//     }

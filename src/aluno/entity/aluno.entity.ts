@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Matricula } from "src/matricula/entity/matricula.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity('aluno') // Nome explícito da tabela
 @Unique("unique_aluno_matricula", ["matricula"])
@@ -32,4 +33,8 @@ export class Aluno { // Renomeado de User para Aluno
 
    @Column()
    password: string;
+
+   @OneToMany(() => Matricula, matricula => matricula.aluno)
+  matriculas: Matricula[];
+
 }

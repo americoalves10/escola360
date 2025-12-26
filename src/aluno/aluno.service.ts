@@ -113,7 +113,7 @@ export class AlunoService {
   // }
 
 //    esse é o responsável por subistituir a senha hash cadastradas no banco por uma nova, tbm segue o mesmo princípio da outra para os outrs perfis;
-    async changePassword(id: number, data: { senhaAtual: string; novaSenha: string }) {
+  async changePassword(id: number, data: { senhaAtual: string; novaSenha: string }) {
         const user = await this.findOne(id);
 
         const senhaValida = await bcrypt.compare(data.senhaAtual, user.password);
@@ -123,9 +123,9 @@ export class AlunoService {
 
         user.password = await bcrypt.hash(data.novaSenha, 10);
         return this.userRepository.save(user);
-    }  
+  }  
   
-    async updateStatus(id: number, status: string): Promise<Aluno> {
+  async updateStatus(id: number, status: string): Promise<Aluno> {
     const user = await this.findOne(id);
 
     user.status = status;
@@ -139,9 +139,6 @@ export class AlunoService {
     }
   }
   
-
-
-
   async login(dto: UserDto): Promise<{ access_token: string }> {
     const { email, password } = dto;
 
@@ -168,4 +165,23 @@ export class AlunoService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
+  // metodo que retorna as informações completas sobre um aluno específico
+  async findAlunoCompleto(alunoId: number) {
+  return this.userRepository.findOne({
+    where: { id: alunoId },
+    relations: [
+      'matriculas',
+      'matriculas.turma',
+      'matriculas.disciplinas',
+      'matriculas.disciplinas.turmaProfessorDisciplina',
+      'matriculas.disciplinas.turmaProfessorDisciplina.professor',
+      'matriculas.disciplinas.turmaProfessorDisciplina.disciplina',
+    ],
+  });
+  }
+  
 }
+
+
+
