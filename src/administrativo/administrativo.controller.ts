@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Get, Patch, Delete, Param } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Get, Patch, Delete, Param, ValidationPipe } from '@nestjs/common';
 import { AdministrativoService } from './administrativo.service';
 import { UserDto } from './dto/administrativo.dto';
 import { Useradm } from './entity/administrativo.entity';
@@ -23,12 +23,21 @@ export class AdministrativoController {
        return this.admnistrativoService.findOne(id);
    }
 
-   @Patch(':id')
-   update(@Param('id') id: number, @Body() updateDto: UserDto): Promise<Useradm>{
-       return this.admnistrativoService.update(id, updateDto);
-   }
+//    @Patch(':id')
+//    update(@Param('id') id: number, @Body() updateDto: UserDto): Promise<Useradm>{
+//        return this.admnistrativoService.update(id, updateDto);
+//    }
 
-//    @Delete(':id')
+    @Patch(':id')
+    update(
+    @Param('id') id: number, 
+    @Body(new ValidationPipe({ skipMissingProperties: true }))
+        body: UserDto, 
+    ): Promise<Useradm> {
+            return this.admnistrativoService.update(id, body);
+    }
+
+    //    @Delete(':id')
 //    @HttpCode(204)
 //    remove(@Param('id') id: number): Promise<void> {
 //        return this.admnistrativoService.remove(id);

@@ -48,4 +48,12 @@ export class ProfessorController {
         return this.professorService.changePassword(id, body);
     }
 
+    @Patch(':id/status')
+    updateStatus(
+        @Param('id') id: number,
+        @Body() body: { status: string }
+    ): Promise<Professor> {
+        return this.professorService.updateStatus(id, body.status);
+    }
+
 }

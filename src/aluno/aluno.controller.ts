@@ -52,6 +52,14 @@ export class AlunoController {
         return this.alunoService.changePassword(id, body);
     }
 
+    @Patch(':id/status')
+        updateStatus(
+            @Param('id') id: number,
+            @Body() body: { status: string }
+        ): Promise<Aluno> {
+            return this.alunoService.updateStatus(id, body.status);
+        }
+
 }   
 
 

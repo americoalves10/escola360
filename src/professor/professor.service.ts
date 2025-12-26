@@ -108,6 +108,21 @@ export class ProfessorService {
         user.password = await bcrypt.hash(data.novaSenha, 10);
         return this.professorRepository.save(user);
     } 
+
+    async updateStatus(id: number, status: string): Promise<Professor> {
+    const user = await this.findOne(id);
+
+    user.status = status;
+
+    try {
+      return await this.professorRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Erro ao atualizar status do professor.',
+      );
+    }
+  }
+  
   
   async login(dto: ProfessorDto): Promise<{ access_token: string }> {
 

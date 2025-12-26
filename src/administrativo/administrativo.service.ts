@@ -61,7 +61,6 @@ export class AdministrativoService {
     async update(id: number, updateData: UserDto): Promise<Useradm> {
         const user = await this.findOne(id);
         const allowedFields = ["matricula", "nome", "cpf", "status", "dataNasc", "email", "password"];
-        
         const sanitizedData: any = {};
 
             // Garante que não entram campos inesperados

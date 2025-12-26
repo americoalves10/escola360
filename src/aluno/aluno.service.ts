@@ -125,6 +125,23 @@ export class AlunoService {
         return this.userRepository.save(user);
     }  
   
+    async updateStatus(id: number, status: string): Promise<Aluno> {
+    const user = await this.findOne(id);
+
+    user.status = status;
+
+    try {
+      return await this.userRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Erro ao atualizar status do professor.',
+      );
+    }
+  }
+  
+
+
+
   async login(dto: UserDto): Promise<{ access_token: string }> {
     const { email, password } = dto;
 
