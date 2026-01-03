@@ -45,7 +45,7 @@ export class ProfessorDto{
    deficiencia: string;
    
    @IsOptional()
-   @IsNotEmpty()
+   
    @IsString()
    tipoDeficiencia: string;
    
