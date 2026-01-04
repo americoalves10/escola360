@@ -13,6 +13,7 @@ import { TurmaProfessorDisciplinaModule } from './turma-professor-disciplina/tur
 import { MatriculaModule } from './matricula/matricula.module';
 import { MatriculaDisciplinaModule } from './matricula-disciplina/matricula-disciplina.module';
 import { AvaliacaoModule } from './avaliacao/avaliacao.module';
+import { MaterialDidaticoModule } from './material-didatico/material-didatico.module';
 
 @Module({
  imports: [
@@ -45,6 +46,7 @@ import { AvaliacaoModule } from './avaliacao/avaliacao.module';
    MatriculaModule,
    MatriculaDisciplinaModule,
    AvaliacaoModule,
+   MaterialDidaticoModule,
  ],
  controllers: [AppController],
  providers: [AppService],
