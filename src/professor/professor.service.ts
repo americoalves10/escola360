@@ -1,4 +1,4 @@
-import {ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException, } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException, } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -13,27 +13,25 @@ export class ProfessorService {
   constructor(
     @InjectRepository(Professor)
     private readonly professorRepository: Repository<Professor>,
-    
+
     private readonly jwtService: JwtService,
-  ) {}
-  
+  ) { }
+
   async create(dto: ProfessorDto): Promise<Professor> {
-
     const senhaHash = await bcrypt.hash(dto.password, 10);
-
     const professor = this.professorRepository.create({
       matricula: dto.matricula,
       nome: dto.nome,
       cpf: dto.cpf,
       dataAdmissao: dto.dataAdmissao,
-      status: dto.status,   
-      formacaoAcad: dto.formacaoAcad, 
+      status: dto.status,
+      formacaoAcad: dto.formacaoAcad,
       titulacao: dto.titulacao,
       deficiencia: dto.deficiencia,
       tipoDeficiencia: dto.tipoDeficiencia,
       email: dto.email,
       password: senhaHash,
-      
+
     });
 
     try {
@@ -45,12 +43,11 @@ export class ProfessorService {
     }
   }
 
-  
   findAll(): Promise<Professor[]> {
     return this.professorRepository.find();
   }
 
-  
+
   async findOne(id: number): Promise<Professor> {
     const professor = await this.professorRepository.findOne({
       where: { id },
@@ -64,15 +61,14 @@ export class ProfessorService {
 
     return professor;
   }
-  
+
   async update(id: number, dto: ProfessorDto): Promise<Professor> {
     const professor = await this.findOne(id);
-
     professor.nome = dto.nome ?? professor.nome;
     professor.cpf = dto.cpf ?? professor.cpf;
     professor.dataAdmissao = dto.dataAdmissao ?? professor.dataAdmissao;
     professor.status = dto.status ?? professor.status;
-    professor.formacaoAcad = dto.formacaoAcad ?? professor.formacaoAcad; 
+    professor.formacaoAcad = dto.formacaoAcad ?? professor.formacaoAcad;
     professor.titulacao = dto.titulacao ?? professor.titulacao;
     professor.deficiencia = dto.deficiencia ?? professor.deficiencia;
     professor.tipoDeficiencia = dto.tipoDeficiencia ?? professor.tipoDeficiencia;
@@ -85,31 +81,20 @@ export class ProfessorService {
     return this.professorRepository.save(professor);
   }
 
-  
-  // async remove(id: number): Promise<void> {
-  //   const result = await this.professorRepository.delete(id);
+  //    esse é o responsável por subistituir a senha hash cadastradas no banco por uma nova, tbm segue o mesmo princípio da outra para os outrs perfis;
+  async changePassword(id: number, data: { senhaAtual: string; novaSenha: string }) {
+    const user = await this.findOne(id);
 
-  //   if (result.affected === 0) {
-  //     throw new NotFoundException(
-  //       `Professor com ID ${id} não encontrado.`,
-  //     );
-  //   }
-  // }
+    const senhaValida = await bcrypt.compare(data.senhaAtual, user.password);
+    if (!senhaValida) {
+      throw new UnauthorizedException('Senha atual inválida');
+    }
 
-//    esse é o responsável por subistituir a senha hash cadastradas no banco por uma nova, tbm segue o mesmo princípio da outra para os outrs perfis;
-    async changePassword(id: number, data: { senhaAtual: string; novaSenha: string }) {
-        const user = await this.findOne(id);
+    user.password = await bcrypt.hash(data.novaSenha, 10);
+    return this.professorRepository.save(user);
+  }
 
-        const senhaValida = await bcrypt.compare(data.senhaAtual, user.password);
-            if (!senhaValida) {
-                throw new UnauthorizedException('Senha atual inválida');
-            }
-
-        user.password = await bcrypt.hash(data.novaSenha, 10);
-        return this.professorRepository.save(user);
-    } 
-
-    async updateStatus(id: number, status: string): Promise<Professor> {
+  async updateStatus(id: number, status: string): Promise<Professor> {
     const user = await this.findOne(id);
 
     user.status = status;
@@ -122,8 +107,7 @@ export class ProfessorService {
       );
     }
   }
-  
-  
+
   async login(dto: ProfessorDto): Promise<{ access_token: string }> {
 
     const professor = await this.professorRepository.findOne({

@@ -21,5 +21,5 @@ export class Disciplina {
 
   @Column()
   assunto: string;
-  
+
 }

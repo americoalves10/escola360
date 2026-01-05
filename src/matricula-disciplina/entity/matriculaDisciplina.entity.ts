@@ -17,8 +17,4 @@ export class MatriculaDisciplina {
   @ManyToOne(() => TurmaProfessorDisciplina, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'turma_professor_disciplina_id' })
   turmaProfessorDisciplina: TurmaProfessorDisciplina;
-
-//   @ManyToOne(() => Turma, { onDelete: 'CASCADE' })
-//   @JoinColumn({ name: 'turma_id' })
-//   turma: Turma;
 }

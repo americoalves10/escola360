@@ -7,20 +7,18 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Turma } from 'src/turma/entity/turma.entity';
 
-
-
 @Module({
- imports: [TypeOrmModule.forFeature([Aluno, Turma]),
- JwtModule.registerAsync({
-   imports: [ConfigModule],
-   inject: [ConfigService],
-   useFactory: (configService: ConfigService) => ({
-     secret: configService.get<string>('JWT_SECRET'),
-     signOptions: {expiresIn: '1h'}
-   })
- })
-],
- controllers: [AlunoController],
- providers: [AlunoService]
+  imports: [TypeOrmModule.forFeature([Aluno, Turma]),
+  JwtModule.registerAsync({
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    useFactory: (configService: ConfigService) => ({
+      secret: configService.get<string>('JWT_SECRET'),
+      signOptions: { expiresIn: '1h' }
+    })
+  })
+  ],
+  controllers: [AlunoController],
+  providers: [AlunoService]
 })
-export class AlunoModule {}
+export class AlunoModule { }

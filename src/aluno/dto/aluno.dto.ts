@@ -2,7 +2,7 @@ import { Type } from "class-transformer";
 import { IsEmail, IsNotEmpty, IsString, IsOptional, MinLength, IsDate } from "class-validator";
 
 export class UserDto {
-   
+
    @IsOptional()
    @IsNotEmpty()
    @IsString()
@@ -26,7 +26,7 @@ export class UserDto {
    @IsOptional()
    @IsNotEmpty()
    @IsString()
-   status: string;   
+   status: string;
 
    @IsOptional() // Use IsOptional se o campo puder ser vazio
    @IsString()
@@ -35,14 +35,14 @@ export class UserDto {
    @IsOptional()
    @IsString()
    tipoDeficiencia: string;
-   
+
    @IsOptional()
-   @IsNotEmpty({message:'O e-mail não pode ser vazio.'})
-   @IsEmail({},{message:'forneça um e-mail válido.'})
+   @IsNotEmpty({ message: 'O e-mail não pode ser vazio.' })
+   @IsEmail({}, { message: 'forneça um e-mail válido.' })
    email: string;
 
    @IsOptional()
-   @IsNotEmpty({message: 'A senha não pode ser vazia.'})
-   @MinLength(6,{message: 'A senha deve ter no mínimo 6 caracteres.'})
+   @IsNotEmpty({ message: 'A senha não pode ser vazia.' })
+   @MinLength(6, { message: 'A senha deve ter no mínimo 6 caracteres.' })
    password: string;
 }

@@ -17,9 +17,8 @@ export class MatriculaDisciplinaService {
 
         @InjectRepository(MatriculaDisciplina)
         private readonly repo: Repository<MatriculaDisciplina>,
-    ) {}
-    
-    
+    ) { }
+
     async adicionar(dto: DisciplinaMatricula) {
 
         const matricula = await this.matriculaRepo.findOne({
@@ -31,25 +30,25 @@ export class MatriculaDisciplinaService {
             throw new NotFoundException('Matrícula não encontrada');
         }
 
-        // 🔐 BLOQUEIO REAL
+        // BLOQUEIO REAL
         const oferta = await this.tpdRepo.findOne({
             where: {
-            id: dto.turmaProfessorDisciplinaId,
-            turma: { id: matricula.turma.id },
+                id: dto.turmaProfessorDisciplinaId,
+                turma: { id: matricula.turma.id },
             },
             relations: ['turma'],
         });
 
         if (!oferta) {
             throw new BadRequestException(
-            'Oferta não pertence à turma da matrícula',
+                'Oferta não pertence à turma da matrícula',
             );
         }
 
         const jaExiste = await this.repo.findOne({
             where: {
-            matricula: { id: matricula.id },
-            turmaProfessorDisciplina: { id: oferta.id },
+                matricula: { id: matricula.id },
+                turmaProfessorDisciplina: { id: oferta.id },
             },
         });
 
@@ -60,25 +59,23 @@ export class MatriculaDisciplinaService {
         const md = this.repo.create({
             matricula,
             turmaProfessorDisciplina: oferta,
-            //turma: matricula.turma
         });
 
         return this.repo.save(md);
-        }
+    }
 
 
     listar() {
         return this.repo.find({
             relations: [
-            'aluno',
-            'turma',
-            'disciplinas',
-            'disciplinas.turmaProfessorDisciplina',
-            'disciplinas.turmaProfessorDisciplina.professor',
-            'disciplinas.turmaProfessorDisciplina.disciplina',
+                'aluno',
+                'turma',
+                'disciplinas',
+                'disciplinas.turmaProfessorDisciplina',
+                'disciplinas.turmaProfessorDisciplina.professor',
+                'disciplinas.turmaProfessorDisciplina.disciplina',
             ],
         });
     }
-
 
 }

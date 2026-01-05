@@ -20,7 +20,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-  // 🔥 ESSENCIAL PARA SERVIR FICHEIROS
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads',
   });

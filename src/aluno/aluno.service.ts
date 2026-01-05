@@ -13,36 +13,35 @@ export class AlunoService {
     private readonly userRepository: Repository<Aluno>,
 
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
-  
   async create(dto: UserDto): Promise<Aluno> {
     const {
       matricula,
       nome,
       cpf,
       dataNasc,
-      status,      
+      status,
       deficiencia,
       tipoDeficiencia,
       email,
       password,
     } = dto;
 
-    // 1️⃣ Verifica se o e-mail já existe
+    // Verifica se o e-mail já existe
     const emailExiste = await this.userRepository.findOne({
       where: { email },
     });
 
     if (emailExiste) {
       throw new ConflictException('Este e-mail já está em uso.');
-    }    
+    }
 
-    // 3️⃣ Criptografa a senha
+    // Criptografa a senha
     const salt = await bcrypt.genSalt();
     const senhaCriptografada = await bcrypt.hash(password, salt);
 
-    // 4️⃣ Cria o aluno associando a turma
+    // Cria o aluno associando a turma
     const user = this.userRepository.create({
       matricula,
       nome,
@@ -53,10 +52,10 @@ export class AlunoService {
       tipoDeficiencia,
       email,
       password: senhaCriptografada,
-     
+
     });
 
-    // 5️⃣ Salva no banco
+    // Salva no banco
     try {
       return await this.userRepository.save(user);
     } catch (error) {
@@ -69,7 +68,7 @@ export class AlunoService {
   findAll(): Promise<Aluno[]> {
     return this.userRepository.find(); // eager carrega a turma
   }
-  
+
   async findOne(id: number): Promise<Aluno> {
     const user = await this.userRepository.findOne({
       where: { id },
@@ -81,7 +80,6 @@ export class AlunoService {
     return user;
   }
 
-  
   async update(id: number, dto: UserDto): Promise<Aluno> {
     const user = await this.findOne(id);
 
@@ -103,28 +101,18 @@ export class AlunoService {
     return this.userRepository.save(user);
   }
 
-  
-  // async remove(id: number): Promise<void> {
-  //   const result = await this.userRepository.delete(id);
-
-  //   if (result.affected === 0) {
-  //     throw new NotFoundException(`Aluno com ID ${id} não encontrado.`);
-  //   }
-  // }
-
-//    esse é o responsável por subistituir a senha hash cadastradas no banco por uma nova, tbm segue o mesmo princípio da outra para os outrs perfis;
   async changePassword(id: number, data: { senhaAtual: string; novaSenha: string }) {
-        const user = await this.findOne(id);
+    const user = await this.findOne(id);
 
-        const senhaValida = await bcrypt.compare(data.senhaAtual, user.password);
-            if (!senhaValida) {
-                throw new UnauthorizedException('Senha atual inválida');
-            }
+    const senhaValida = await bcrypt.compare(data.senhaAtual, user.password);
+    if (!senhaValida) {
+      throw new UnauthorizedException('Senha atual inválida');
+    }
 
-        user.password = await bcrypt.hash(data.novaSenha, 10);
-        return this.userRepository.save(user);
-  }  
-  
+    user.password = await bcrypt.hash(data.novaSenha, 10);
+    return this.userRepository.save(user);
+  }
+
   async updateStatus(id: number, status: string): Promise<Aluno> {
     const user = await this.findOne(id);
 
@@ -138,7 +126,7 @@ export class AlunoService {
       );
     }
   }
-  
+
   async login(dto: UserDto): Promise<{ access_token: string }> {
     const { email, password } = dto;
 
@@ -168,20 +156,16 @@ export class AlunoService {
 
   // metodo que retorna as informações completas sobre um aluno específico
   async findAlunoCompleto(alunoId: number) {
-  return this.userRepository.findOne({
-    where: { id: alunoId },
-    relations: [
-      'matriculas',
-      'matriculas.turma',
-      'matriculas.disciplinas',
-      'matriculas.disciplinas.turmaProfessorDisciplina',
-      'matriculas.disciplinas.turmaProfessorDisciplina.professor',
-      'matriculas.disciplinas.turmaProfessorDisciplina.disciplina',
-    ],
-  });
+    return this.userRepository.findOne({
+      where: { id: alunoId },
+      relations: [
+        'matriculas',
+        'matriculas.turma',
+        'matriculas.disciplinas',
+        'matriculas.disciplinas.turmaProfessorDisciplina',
+        'matriculas.disciplinas.turmaProfessorDisciplina.professor',
+        'matriculas.disciplinas.turmaProfessorDisciplina.disciplina',
+      ],
+    });
   }
-  
 }
-
-
-

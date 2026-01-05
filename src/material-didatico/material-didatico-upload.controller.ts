@@ -1,8 +1,4 @@
-import {
-  Controller,
-  Post,
-  UseInterceptors,
-  UploadedFile,
+import {Controller, Post, UseInterceptors, UploadedFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -33,6 +29,4 @@ export class MaterialDidaticoUploadController {
       filename: file.filename,
       url: `/uploads/material-didatico/${file.filename}`,
     };
-  }
-}
-
+  }}

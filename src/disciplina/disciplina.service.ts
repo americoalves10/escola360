@@ -18,20 +18,16 @@ export class DisciplinaService {
 
     @InjectRepository(Professor)
     private readonly professorRepository: Repository<Professor>,
-  ) {}
+  ) { }
 
-  
   async create(dto: DisciplinaDto): Promise<Disciplina> {
-
     const disciplina = this.disciplinaRepository.create({
       nome: dto.nome,
       codDisciplina: dto.codDisciplina,
       status: dto.status,
       cargaHoraria: dto.cargaHoraria,
       assunto: dto.assunto,
-      
     });
-
     try {
       return await this.disciplinaRepository.save(disciplina);
     } catch (error) {
@@ -41,12 +37,10 @@ export class DisciplinaService {
     }
   }
 
-  
   findAll(): Promise<Disciplina[]> {
     return this.disciplinaRepository.find();
   }
 
-  
   async findOne(id: number): Promise<Disciplina> {
     const disciplina = await this.disciplinaRepository.findOne({
       where: { id },
@@ -57,14 +51,11 @@ export class DisciplinaService {
         `Disciplina com ID ${id} não encontrada.`,
       );
     }
-
     return disciplina;
   }
 
-  
   async update(id: number, dto: DisciplinaDto): Promise<Disciplina> {
     const disciplina = await this.findOne(id);
-
     disciplina.nome = dto.nome ?? disciplina.nome;
     disciplina.cargaHoraria = dto.cargaHoraria ?? disciplina.cargaHoraria;
     disciplina.codDisciplina = dto.codDisciplina ?? disciplina.codDisciplina;
@@ -73,15 +64,4 @@ export class DisciplinaService {
 
     return this.disciplinaRepository.save(disciplina);
   }
-
-  
-  // async remove(id: number): Promise<void> {
-  //   const result = await this.disciplinaRepository.delete(id);
-
-  //   if (result.affected === 0) {
-  //     throw new NotFoundException(
-  //       `Disciplina com ID ${id} não encontrada.`,
-  //     );
-  //   }
-  // }
 }

@@ -10,17 +10,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Disciplina } from 'src/disciplina/entity/disciplina.entity';
 
 @Module({
-imports: [TypeOrmModule.forFeature([TurmaProfessorDisciplina, Professor, Turma, Disciplina]),
- JwtModule.registerAsync({
-   imports: [ConfigModule],
-   inject: [ConfigService],
-   useFactory: (configService: ConfigService) => ({
-     secret: configService.get<string>('JWT_SECRET'),
-     signOptions: {expiresIn: '1h'}
-   })
- })
-],  
+  imports: [TypeOrmModule.forFeature([TurmaProfessorDisciplina, Professor, Turma, Disciplina]),
+  JwtModule.registerAsync({
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    useFactory: (configService: ConfigService) => ({
+      secret: configService.get<string>('JWT_SECRET'),
+      signOptions: { expiresIn: '1h' }
+    })
+  })
+  ],
   controllers: [TurmaProfessorDisciplinaController],
   providers: [TurmaProfessorDisciplinaService],
 })
-export class TurmaProfessorDisciplinaModule {}
+export class TurmaProfessorDisciplinaModule { }

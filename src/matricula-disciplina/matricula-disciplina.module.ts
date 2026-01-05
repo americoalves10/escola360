@@ -8,13 +8,13 @@ import { TurmaProfessorDisciplina } from 'src/turma-professor-disciplina/entity/
 
 @Module({
   imports: [
-      TypeOrmModule.forFeature([
-        Matricula,
-        MatriculaDisciplina,
-        TurmaProfessorDisciplina,
-      ]),
-    ],
+    TypeOrmModule.forFeature([
+      Matricula,
+      MatriculaDisciplina,
+      TurmaProfessorDisciplina,
+    ]),
+  ],
   controllers: [MatriculaDisciplinaController],
   providers: [MatriculaDisciplinaService],
 })
-export class MatriculaDisciplinaModule {}
+export class MatriculaDisciplinaModule { }

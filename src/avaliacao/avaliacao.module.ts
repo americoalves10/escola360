@@ -16,7 +16,6 @@ import { RespostaAlunoService } from "./resposta-aluno.service";
 import { ResultadoAvaliacaoController } from "./resultado-avaliacao.controller";
 import { ResultadoAvaliacaoService } from "./resultado-avaliacao.service";
 
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([

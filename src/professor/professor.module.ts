@@ -6,19 +6,18 @@ import { Professor } from './entity/professor.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-
 @Module({
-imports: [TypeOrmModule.forFeature([Professor]),
- JwtModule.registerAsync({
-   imports: [ConfigModule],
-   inject: [ConfigService],
-   useFactory: (configService: ConfigService) => ({
-     secret: configService.get<string>('JWT_SECRET'),
-     signOptions: {expiresIn: '1h'}
-   })
- })
-],  
+  imports: [TypeOrmModule.forFeature([Professor]),
+  JwtModule.registerAsync({
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    useFactory: (configService: ConfigService) => ({
+      secret: configService.get<string>('JWT_SECRET'),
+      signOptions: { expiresIn: '1h' }
+    })
+  })
+  ],
   controllers: [ProfessorController],
   providers: [ProfessorService],
 })
-export class ProfessorModule {}
+export class ProfessorModule { }

@@ -9,17 +9,17 @@ import { Professor } from 'src/professor/entity/professor.entity';
 import { Useradm } from 'src/administrativo/entity/administrativo.entity';
 
 @Module({
-   imports: [TypeOrmModule.forFeature([Aluno, Professor, Useradm]),
-   JwtModule.registerAsync({
-     imports: [ConfigModule],
-     inject: [ConfigService],
-     useFactory: (configService: ConfigService) => ({
-       secret: configService.get<string>('JWT_SECRET'),
-       signOptions: {expiresIn: '1h'}
-     })
-   })
+  imports: [TypeOrmModule.forFeature([Aluno, Professor, Useradm]),
+  JwtModule.registerAsync({
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    useFactory: (configService: ConfigService) => ({
+      secret: configService.get<string>('JWT_SECRET'),
+      signOptions: { expiresIn: '1h' }
+    })
+  })
   ],
   controllers: [LoginController],
   providers: [LoginService],
 })
-export class LoginModule {}
+export class LoginModule { }

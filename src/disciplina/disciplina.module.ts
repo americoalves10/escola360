@@ -13,4 +13,4 @@ import { DisciplinaController } from './disciplina.controller';
   controllers: [DisciplinaController],
   providers: [DisciplinaService],
 })
-export class DisciplinaModule {}
+export class DisciplinaModule { }

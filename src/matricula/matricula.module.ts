@@ -11,10 +11,10 @@ import { MatriculaService } from './matricula.service';
     TypeOrmModule.forFeature([
       Matricula,
       Aluno,
-      Turma,      
+      Turma,
     ]),
   ],
   controllers: [MatriculaController],
   providers: [MatriculaService],
 })
-export class MatriculaModule {}
+export class MatriculaModule { }

@@ -1,12 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-  JoinColumn,
-} from 'typeorm';
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn, } from 'typeorm';
 import { Professor } from 'src/professor/entity/professor.entity';
 import { Disciplina } from 'src/disciplina/entity/disciplina.entity';
 import { Turma } from 'src/turma/entity/turma.entity';
@@ -62,4 +54,3 @@ export class MaterialDidatico {
   @UpdateDateColumn()
   updatedAt: Date;
 }
-

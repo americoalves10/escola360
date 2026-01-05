@@ -14,7 +14,7 @@ import { Professor } from 'src/professor/entity/professor.entity';
       MaterialDidatico,
       Disciplina,
       Turma,
-      Professor, // 🔥 FALTAVA ISTO
+      Professor,
     ]),
   ],
   controllers: [
@@ -23,5 +23,5 @@ import { Professor } from 'src/professor/entity/professor.entity';
   ],
   providers: [MaterialDidaticoService],
 })
-export class MaterialDidaticoModule {}
+export class MaterialDidaticoModule { }
 

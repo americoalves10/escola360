@@ -16,39 +16,38 @@ import { AvaliacaoModule } from './avaliacao/avaliacao.module';
 import { MaterialDidaticoModule } from './material-didatico/material-didatico.module';
 
 @Module({
- imports: [
-   ConfigModule.forRoot({
-     isGlobal: true,
-   }),
-   TypeOrmModule.forRootAsync({
-     imports:[ConfigModule],
-     useFactory:(configService: ConfigService) => ({
-       type:'mysql',
-       host:configService.get<string>('MYSQL_DB_HOST'),
-       port:configService.get<number>('MYSQL_DB_PORT'),
-       username:configService.get<string>('MYSQL_DB_USERNAME'),
-       password:configService.get<string>('MYSQL_DB_PASSWORD'),
-       database:configService.get<string>('MYSQL_DB_DATABASE'),
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('MYSQL_DB_HOST'),
+        port: configService.get<number>('MYSQL_DB_PORT'),
+        username: configService.get<string>('MYSQL_DB_USERNAME'),
+        password: configService.get<string>('MYSQL_DB_PASSWORD'),
+        database: configService.get<string>('MYSQL_DB_DATABASE'),
 
-
-       entities:[__dirname + '/**/*.entity{.ts,.js}'],
-       synchronize:true,
-     }),
-     inject:[ConfigService],
-   }),
-   AlunoModule,
-   AdministrativoModule,
-   ProfessorModule,
-   LoginModule,
-   TurmaModule,
-   DisciplinaModule,
-   TurmaProfessorDisciplinaModule,
-   MatriculaModule,
-   MatriculaDisciplinaModule,
-   AvaliacaoModule,
-   MaterialDidaticoModule,
- ],
- controllers: [AppController],
- providers: [AppService],
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
+    }),
+    AlunoModule,
+    AdministrativoModule,
+    ProfessorModule,
+    LoginModule,
+    TurmaModule,
+    DisciplinaModule,
+    TurmaProfessorDisciplinaModule,
+    MatriculaModule,
+    MatriculaDisciplinaModule,
+    AvaliacaoModule,
+    MaterialDidaticoModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

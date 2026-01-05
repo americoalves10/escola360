@@ -8,7 +8,7 @@ import { ResponderQuestaoDiscursivaDto } from "./dtos/responder-questao-discursi
 export class RespostaAlunoController {
   constructor(private readonly service: RespostaAlunoService) { }
 
-  // ✅ PRIMEIRO a rota específica
+  // PRIMEIRO a rota específica
   @Post('discursiva/:alunoId')
   responderDiscursiva(
     @Param('alunoId', ParseIntPipe) alunoId: number,
@@ -17,7 +17,7 @@ export class RespostaAlunoController {
     return this.service.responderDiscursiva(alunoId, dto);
   }
 
-  // ✅ DEPOIS a rota genérica
+  // DEPOIS a rota genérica
   @Post(':alunoId')
   responder(
     @Param('alunoId', ParseIntPipe) alunoId: number,
@@ -25,8 +25,6 @@ export class RespostaAlunoController {
   ) {
     return this.service.responder(alunoId, dto);
   }
-
-
 
   // professor corrige discursiva
   @Patch('corrigir/:respostaId')
@@ -36,6 +34,5 @@ export class RespostaAlunoController {
   ) {
     return this.service.corrigirDiscursiva(respostaId, dto.nota);
   }
-
 }
 

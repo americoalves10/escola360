@@ -2,7 +2,6 @@ import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { AvaliacaoService } from "./avaliacao.service";
 import { CreateAvaliacaoDto } from "./dtos/cria-avaliacao.dto";
 
-
 @Controller('avaliacoes')
 export class AvaliacaoController {
   constructor(private service: AvaliacaoService) { }

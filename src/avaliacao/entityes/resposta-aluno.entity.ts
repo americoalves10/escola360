@@ -24,11 +24,9 @@ export class RespostaAluno {
   @Column({ type: 'text', nullable: true })
   respostaTexto: string | null;
 
-  // 🔴 AQUI ESTAVA O ERRO
   @Column({ type: 'tinyint', width: 1, nullable: true })
   correta: boolean | null;
 
-  // 🔴 E AQUI TAMBÉM
   @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
   nota: number | null;
 }

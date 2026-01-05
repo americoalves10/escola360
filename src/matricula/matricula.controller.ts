@@ -4,12 +4,12 @@ import { MatriculaDto } from './dto/matricula.dto';
 
 @Controller('matricula')
 export class MatriculaController {
-  constructor(private service: MatriculaService) {}
+  constructor(private service: MatriculaService) { }
 
   //informações de todos alunos da turma
   @Get('turma/:turmaId/alunos-simples')
-    findAlunos(@Param('turmaId') turmaId: string) {
-        return this.service.findSomenteAlunosPorTurma(Number(turmaId));
+  findAlunos(@Param('turmaId') turmaId: string) {
+    return this.service.findSomenteAlunosPorTurma(Number(turmaId));
   }
 
   @Post()
@@ -21,5 +21,4 @@ export class MatriculaController {
   listar() {
     return this.service.listar();
   }
-  
 }

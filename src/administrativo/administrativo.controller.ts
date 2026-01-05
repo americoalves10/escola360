@@ -5,39 +5,39 @@ import { Useradm } from './entity/administrativo.entity';
 
 @Controller('administrativo')
 export class AdministrativoController {
-  constructor(private readonly admnistrativoService: AdministrativoService) {}
+    constructor(private readonly admnistrativoService: AdministrativoService) { }
 
-   @Post('registro') // /registro
-   async create(@Body() createUserDto: UserDto){
-       return this.admnistrativoService.create(createUserDto);
-   }
+    @Post('registro') // /registro
+    async create(@Body() createUserDto: UserDto) {
+        return this.admnistrativoService.create(createUserDto);
+    }
 
-   @Get()
-   findAll(): Promise<Useradm[]> {
-       return this.admnistrativoService.findAll();
-   }
+    @Get()
+    findAll(): Promise<Useradm[]> {
+        return this.admnistrativoService.findAll();
+    }
 
-   @Get(':id')
-   findOne(@Param('id') id: number): Promise<Useradm>{
-       return this.admnistrativoService.findOne(id);
-   }
+    @Get(':id')
+    findOne(@Param('id') id: number): Promise<Useradm> {
+        return this.admnistrativoService.findOne(id);
+    }
 
     @Patch(':id')
     update(
-    @Param('id') id: number, 
-    @Body(new ValidationPipe({ skipMissingProperties: true }))
-        body: UserDto, 
+        @Param('id') id: number,
+        @Body(new ValidationPipe({ skipMissingProperties: true }))
+        body: UserDto,
     ): Promise<Useradm> {
-            return this.admnistrativoService.update(id, body);
-    }  
+        return this.admnistrativoService.update(id, body);
+    }
 
-   @HttpCode(HttpStatus.OK)
-   @Post('login')
-   async login(@Body() loginDto:UserDto){
-       return this.admnistrativoService.login(loginDto);
-   }
+    @HttpCode(HttpStatus.OK)
+    @Post('login')
+    async login(@Body() loginDto: UserDto) {
+        return this.admnistrativoService.login(loginDto);
+    }
 
-//    Nesse endpoint, apenas é para a senha, mas mudando o trecho do retorno ele pode ser colocado nos outros perfils de usuário(não tenho certeza);
+    //    Nesse endpoint, apenas é para a senha, mas mudando o trecho do retorno ele pode ser colocado nos outros perfils de usuário(não tenho certeza);
     @Patch(':id/password')
     changePassword(
         @Param('id') id: number,
@@ -45,6 +45,4 @@ export class AdministrativoController {
     ) {
         return this.admnistrativoService.changePassword(id, body);
     }
-
 }
-

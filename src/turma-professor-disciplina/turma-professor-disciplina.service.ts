@@ -7,7 +7,6 @@ import { Disciplina } from "src/disciplina/entity/disciplina.entity";
 import { TurmaProfessorDisciplina } from "./entity/turmaProfessorDisciplina.entity";
 import { CreateTurmaProfessorDisciplinaDto } from "./dto/turmaProfessorDisciplina.dto";
 
-
 @Injectable()
 export class TurmaProfessorDisciplinaService {
   constructor(
@@ -22,7 +21,7 @@ export class TurmaProfessorDisciplinaService {
 
     @InjectRepository(Disciplina)
     private disciplinaRepo: Repository<Disciplina>,
-  ) {}
+  ) { }
 
   async vincular(dto: CreateTurmaProfessorDisciplinaDto) {
     const professor = await this.professorRepo.findOneBy({ id: dto.professorId });

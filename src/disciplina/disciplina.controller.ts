@@ -1,21 +1,10 @@
-import {
-  Controller,
-  Post,
-  Get,
-  Patch,
-  Delete,
-  Param,
-  Body,
-  HttpCode,
-} from '@nestjs/common';
-
+import { Controller, Post, Get, Patch, Delete, Param, Body, HttpCode, } from '@nestjs/common';
 import { DisciplinaService } from './disciplina.service';
 import { DisciplinaDto } from './dto/disciplina.dto';
 
 @Controller('disciplina')
 export class DisciplinaController {
-
-  constructor(private readonly disciplinaService: DisciplinaService) {}
+  constructor(private readonly disciplinaService: DisciplinaService) { }
 
   @Post('registro')
   create(@Body() dto: DisciplinaDto) {
@@ -36,10 +25,4 @@ export class DisciplinaController {
   update(@Param('id') id: number, @Body() dto: DisciplinaDto) {
     return this.disciplinaService.update(Number(id), dto);
   }
-
-  // @Delete(':id')
-  // @HttpCode(204)
-  // remove(@Param('id') id: number) {
-  //   return this.disciplinaService.remove(Number(id));
-  // }
 }

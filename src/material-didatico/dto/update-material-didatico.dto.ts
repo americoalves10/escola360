@@ -3,4 +3,4 @@ import { CreateMaterialDidaticoDto } from './material-didatico.dto';
 
 export class UpdateMaterialDidaticoDto extends PartialType(
   CreateMaterialDidaticoDto,
-) {}
+) { }

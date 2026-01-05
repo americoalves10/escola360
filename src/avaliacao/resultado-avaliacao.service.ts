@@ -24,7 +24,6 @@ export class ResultadoAvaliacaoService {
     if (!avaliacao) {
       throw new NotFoundException('Avaliação não encontrada');
     }
-
     const respostas = await this.respostaRepo
       .createQueryBuilder('r')
       .leftJoinAndSelect('r.questao', 'q')
@@ -61,11 +60,9 @@ export class ResultadoAvaliacaoService {
         avaliacao: { id: avaliacaoId },
       });
     }
-
     resultado.nota_final = notaFinal;
     resultado.percentual = percentual;
     resultado.finalizado = true;
-
     return this.repo.save(resultado);
   }
 }

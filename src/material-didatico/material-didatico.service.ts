@@ -21,7 +21,7 @@ export class MaterialDidaticoService {
 
     @InjectRepository(Professor)
     private readonly professorRepo: Repository<Professor>,
-  ) {}
+  ) { }
 
   // 👨‍🏫 CRIAR MATERIAL
   async create(dto: CreateMaterialDidaticoDto, professorId: number) {
@@ -59,14 +59,15 @@ export class MaterialDidaticoService {
   }
 
   async findByProfessor(turmaId: number, disciplinaId: number) {
-  return this.repository.find({
-    where: {
-      turma: { id: turmaId },
-      disciplina: { id: disciplinaId },
-    },
-    order: { createdAt: 'DESC' },
-  });
+    return this.repository.find({
+      where: {
+        turma: { id: turmaId },
+        disciplina: { id: disciplinaId },
+      },
+      order: { createdAt: 'DESC' },
+    });
   }
+  
   // 👨‍🎓 LISTAR VISÍVEIS PARA ALUNO
   async findVisiveis(turmaId: number, disciplinaId: number) {
     return this.repository.find({

@@ -9,21 +9,21 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class TurmaService {
 
-   constructor(
-       @InjectRepository(Turma) private turmaRepository: Repository<Turma>,
-       private jwtService: JwtService
-   ){}
+  constructor(
+    @InjectRepository(Turma) private turmaRepository: Repository<Turma>,
+    private jwtService: JwtService
+  ) { }
 
-   create(dto: TurmaDto): Promise<Turma> {
+  create(dto: TurmaDto): Promise<Turma> {
     const turma = this.turmaRepository.create(dto);
     return this.turmaRepository.save(turma);
   }
 
-   findAll(): Promise<Turma[]>{
-       return this.turmaRepository.find();
-   }
+  findAll(): Promise<Turma[]> {
+    return this.turmaRepository.find();
+  }
 
-   async findOne(id: number): Promise<Turma> {
+  async findOne(id: number): Promise<Turma> {
     const turma = await this.turmaRepository.findOneBy({ id });
     if (!turma) {
       throw new NotFoundException('Turma não encontrada');
@@ -32,32 +32,23 @@ export class TurmaService {
   }
 
   async update(id: number, dto: TurmaDto): Promise<Turma> {
-      const turma = await this.findOne(id);
-  
-      if (id) {
-        const turma = await this.turmaRepository.findOne({
-          where: { id: id},
-        });
-        if (!turma) {
-          throw new NotFoundException('Turma não encontrada.');
-        }
-        turma.id = id;
+    const turma = await this.findOne(id);
+
+    if (id) {
+      const turma = await this.turmaRepository.findOne({
+        where: { id: id },
+      });
+      if (!turma) {
+        throw new NotFoundException('Turma não encontrada.');
       }
-  
-      turma.nome = dto.nome ?? turma.nome;
-      turma.turno = dto.turno ?? turma.turno;
-      
-  
-      return this.turmaRepository.save(turma);
+      turma.id = id;
     }
 
+    turma.nome = dto.nome ?? turma.nome;
+    turma.turno = dto.turno ?? turma.turno;
 
 
-//    async remove(id: number): Promise<void> {
-//       const result = await this.userRepository.delete(id);
-//       if(result.affected === 0){
-//           throw new NotFoundException(`Aluno com o id ${id} não encontrado para excluir.`)
-//       }
-//    }
-   
+    return this.turmaRepository.save(turma);
+  }
+
 }

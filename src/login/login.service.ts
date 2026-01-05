@@ -9,7 +9,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class LoginService {
-    constructor(
+  constructor(
     @InjectRepository(Aluno)
     private alunoRepo: Repository<Aluno>,
 
@@ -20,7 +20,7 @@ export class LoginService {
     private adminRepo: Repository<Useradm>,
 
     private jwtService: JwtService
-  ) {}
+  ) { }
 
   async login(email: string, senha: string) {
     // 1. Tenta encontrar como aluno
@@ -30,7 +30,7 @@ export class LoginService {
         access_token: this.jwtService.sign({ sub: aluno.id, role: 'aluno' }),
         role: 'aluno',
         id: aluno.id,
-        nome: aluno.nome,        
+        nome: aluno.nome,
       };
     }
 
@@ -55,7 +55,6 @@ export class LoginService {
         nome: admin.nome,
       };
     }
-
     throw new UnauthorizedException('Email ou senha inválidos.');
   }
 }

@@ -5,31 +5,31 @@ import { Professor } from './entity/professor.entity';
 
 @Controller('professor')
 export class ProfessorController {
-  constructor(private readonly professorService: ProfessorService) {}
+    constructor(private readonly professorService: ProfessorService) { }
 
-   @Post('registro') // /registro
-   async create(@Body() createUserDto: ProfessorDto){
-       return this.professorService.create(createUserDto);
-   }
+    @Post('registro') // /registro
+    async create(@Body() createUserDto: ProfessorDto) {
+        return this.professorService.create(createUserDto);
+    }
 
-   @Get()
-   findAll(): Promise<Professor[]> {
-       return this.professorService.findAll();
-   }
+    @Get()
+    findAll(): Promise<Professor[]> {
+        return this.professorService.findAll();
+    }
 
-   @Get(':id')
-   findOne(@Param('id') id: number): Promise<Professor>{
-       return this.professorService.findOne(id);
-   }
-   
-   @Patch(':id')
-   update(@Param('id') id: number, @Body() updateDto: ProfessorDto): Promise<Professor>{
-       return this.professorService.update(id, updateDto);
-   }
+    @Get(':id')
+    findOne(@Param('id') id: number): Promise<Professor> {
+        return this.professorService.findOne(id);
+    }
+
+    @Patch(':id')
+    update(@Param('id') id: number, @Body() updateDto: ProfessorDto): Promise<Professor> {
+        return this.professorService.update(id, updateDto);
+    }
 
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    async login(@Body() loginDto:ProfessorDto){
+    async login(@Body() loginDto: ProfessorDto) {
         return this.professorService.login(loginDto);
     }
 
@@ -49,5 +49,4 @@ export class ProfessorController {
     ): Promise<Professor> {
         return this.professorService.updateStatus(id, body.status);
     }
-
 }

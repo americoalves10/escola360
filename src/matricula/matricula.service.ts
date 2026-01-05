@@ -17,10 +17,9 @@ export class MatriculaService {
 
     @InjectRepository(Turma)
     private turmaRepo: Repository<Turma>,
-  ) {}
+  ) { }
 
   async criar(dto: MatriculaDto) {
-
     const aluno = await this.alunoRepo.findOneBy({ id: Number(dto.alunoId) });
     const turma = await this.turmaRepo.findOneBy({ id: Number(dto.turmaId) });
 
@@ -29,42 +28,41 @@ export class MatriculaService {
     }
 
     const jaExiste = await this.repo.findOne({
-        where: { 
-          aluno: { id: aluno.id }, 
-          turma: { id: turma.id },
-          anoLetivo: dto.anoLetivo 
-        }
+      where: {
+        aluno: { id: aluno.id },
+        turma: { id: turma.id },
+        anoLetivo: dto.anoLetivo
+      }
     });
 
     if (jaExiste) {
-         throw new BadRequestException('Este aluno já está matriculado nesta turma para este ano letivo.');
+      throw new BadRequestException('Este aluno já está matriculado nesta turma para este ano letivo.');
     }
 
     // Usando os IDs diretamente ou os objetos
-    const matricula = this.repo.create({ 
-         aluno, 
-         turma, 
-         anoLetivo: dto.anoLetivo 
+    const matricula = this.repo.create({
+      aluno,
+      turma,
+      anoLetivo: dto.anoLetivo
     });
 
-      return this.repo.save(matricula);
+    return this.repo.save(matricula);
   }
 
   listar() {
-      return this.repo.find({
-        relations: ['aluno', 'turma'],
-      });
+    return this.repo.find({
+      relations: ['aluno', 'turma'],
+    });
   }
 
   // metodo que retorna as informações de todos alunos da turma
   async findSomenteAlunosPorTurma(turmaId: number) {
-  const matriculas = await this.repo.find({
-    where: { turma: { id: turmaId } },
-    relations: ['aluno'],
-  });
+    const matriculas = await this.repo.find({
+      where: { turma: { id: turmaId } },
+      relations: ['aluno'],
+    });
 
-  return matriculas.map(m => m.aluno);
+    return matriculas.map(m => m.aluno);
   }
-
 }
 

@@ -4,7 +4,7 @@ import { DisciplinaMatricula } from './dto/matriculaDisciplina.dto';
 
 @Controller('matricula-disciplina')
 export class MatriculaDisciplinaController {
-  constructor(private service: MatriculaDisciplinaService) {}
+  constructor(private service: MatriculaDisciplinaService) { }
 
   @Post()
   adicionar(@Body() dto: DisciplinaMatricula) {
@@ -12,8 +12,7 @@ export class MatriculaDisciplinaController {
   }
 
   @Get()
-    listar() {
-      return this.service.listar();
-    }
-
+  listar() {
+    return this.service.listar();
+  }
 }

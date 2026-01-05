@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
-
 import { RespostaAluno } from './entityes/resposta-aluno.entity';
 import { Questao, TipoQuestao } from './entityes/questao.entity';
 import { Alternativa } from './entityes/alternativa.entity';
@@ -60,7 +59,6 @@ export class RespostaAlunoService {
     } as unknown as RespostaAluno);
 
     return this.repo.save(resposta);
-
   }
 
   async responderDiscursiva(
@@ -117,5 +115,4 @@ export class RespostaAlunoService {
     resposta.nota = nota;
     return this.repo.save(resposta);
   }
-
 }
