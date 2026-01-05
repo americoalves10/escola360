@@ -1,49 +1,38 @@
 import {
   Controller,
   Post,
-  UploadedFile,
   UseInterceptors,
-  BadRequestException,
+  UploadedFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
-@Controller('material-didatico/upload')
+@Controller('material-didatico')
 export class MaterialDidaticoUploadController {
 
-  @Post()
+  @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
+        destination: './uploads/material-didatico',
+        filename: (req, file, callback) => {
           const uniqueName =
             Date.now() + '-' + Math.round(Math.random() * 1e9);
-          cb(null, uniqueName + extname(file.originalname));
+          callback(
+            null,
+            uniqueName + extname(file.originalname),
+          );
         },
       }),
-      fileFilter: (req, file, cb) => {
-        const allowed = ['.pdf', '.doc', '.docx', '.ppt', '.pptx'];
-        const ext = extname(file.originalname).toLowerCase();
-        if (!allowed.includes(ext)) {
-          return cb(
-            new BadRequestException('Tipo de ficheiro não permitido'),
-            false,
-          );
-        }
-        cb(null, true);
-      },
-      limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
     }),
   )
   upload(@UploadedFile() file: Express.Multer.File) {
-    if (!file) {
-      throw new BadRequestException('Ficheiro não enviado');
-    }
-
     return {
-      url: `/uploads/${file.filename}`,
+      message: 'Upload realizado com sucesso',
+      filename: file.filename,
+      url: `/uploads/material-didatico/${file.filename}`,
     };
   }
 }
+

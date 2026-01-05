@@ -62,3 +62,4 @@ export class MaterialDidatico {
   @UpdateDateColumn()
   updatedAt: Date;
 }
+

@@ -7,15 +7,18 @@ export class CreateMaterialDidaticoDto {
   titulo: string;
 
   @IsOptional()
+  @IsString()
   descricao?: string;
 
   @IsEnum(TipoMaterial)
   tipo: TipoMaterial;
 
   @IsOptional()
+  @IsString()
   ficheiroUrl?: string;
 
   @IsOptional()
+  @IsString()
   linkVideo?: string;
 
   @IsNumber()
@@ -23,7 +26,5 @@ export class CreateMaterialDidaticoDto {
 
   @IsNumber()
   turmaId: number;
-
-  @IsOptional()
-  dataPublicacao?: Date;
 }
+

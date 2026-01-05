@@ -3,9 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MaterialDidatico } from './entity/material-didatico.entity';
 import { MaterialDidaticoService } from './material-didatico.service';
 import { MaterialDidaticoController } from './material-didatico.controller';
-import { MaterialDidaticoUploadController } from './material-didatico-upload.controller';
 import { Disciplina } from 'src/disciplina/entity/disciplina.entity';
 import { Turma } from 'src/turma/entity/turma.entity';
+import { MaterialDidaticoUploadController } from './material-didatico-upload.controller';
+import { Professor } from 'src/professor/entity/professor.entity';
 
 @Module({
   imports: [
@@ -13,12 +14,14 @@ import { Turma } from 'src/turma/entity/turma.entity';
       MaterialDidatico,
       Disciplina,
       Turma,
+      Professor, // 🔥 FALTAVA ISTO
     ]),
   ],
   controllers: [
     MaterialDidaticoController,
-    MaterialDidaticoUploadController, // 🔥 ESTE É O PONTO CRÍTICO
+    MaterialDidaticoUploadController,
   ],
   providers: [MaterialDidaticoService],
 })
 export class MaterialDidaticoModule {}
+

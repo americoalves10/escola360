@@ -25,7 +25,7 @@ import { MaterialDidaticoModule } from './material-didatico/material-didatico.mo
      useFactory:(configService: ConfigService) => ({
        type:'mysql',
        host:configService.get<string>('MYSQL_DB_HOST'),
-       port:configService.get<number>('MYQSL_DB_PORT'),
+       port:configService.get<number>('MYSQL_DB_PORT'),
        username:configService.get<string>('MYSQL_DB_USERNAME'),
        password:configService.get<string>('MYSQL_DB_PASSWORD'),
        database:configService.get<string>('MYSQL_DB_DATABASE'),

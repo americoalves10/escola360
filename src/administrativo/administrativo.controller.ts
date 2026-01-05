@@ -3,7 +3,6 @@ import { AdministrativoService } from './administrativo.service';
 import { UserDto } from './dto/administrativo.dto';
 import { Useradm } from './entity/administrativo.entity';
 
-
 @Controller('administrativo')
 export class AdministrativoController {
   constructor(private readonly admnistrativoService: AdministrativoService) {}
@@ -48,3 +47,4 @@ export class AdministrativoController {
     }
 
 }
+

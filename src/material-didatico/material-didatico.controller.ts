@@ -15,52 +15,79 @@ import { UpdateMaterialDidaticoDto } from './dto/update-material-didatico.dto';
 
 @Controller('material-didatico')
 export class MaterialDidaticoController {
-  constructor(private readonly service: MaterialDidaticoService) {}
+  constructor(private readonly service: MaterialDidaticoService) { }
 
-  @Post()
-  create(
+  // 👨‍🏫 PROFESSOR CRIA MATERIAL
+  @Post('professor')
+  createByProfessor(
     @Body() dto: CreateMaterialDidaticoDto,
-    @Headers('tipo') tipo: string,
+    @Headers('professor-id') professorId: number,
   ) {
-    if (tipo !== 'PROFESSOR') {
-      throw new ForbiddenException(
-        'Apenas professores podem adicionar material',
-      );
+    if (!professorId) {
+      throw new ForbiddenException('Professor não identificado');
     }
 
-    return this.service.create(dto);
+    return this.service.create(dto, Number(professorId));
   }
 
-  @Get('disciplina/:disciplinaId/turma/:turmaId')
-  findAll(
-    @Param('disciplinaId') disciplinaId: number,
+  @Get('professor/turma/:turmaId/disciplina/:disciplinaId')
+  findForProfessor(
     @Param('turmaId') turmaId: number,
+    @Param('disciplinaId') disciplinaId: number,
+    @Headers('professor-id') professorId: number,
   ) {
-    return this.service.findByDisciplinaETurma(disciplinaId, turmaId);
+    if (!professorId) {
+      throw new ForbiddenException('Professor não identificado');
+    }
+
+    return this.service.findByProfessor(
+      Number(turmaId),
+      Number(disciplinaId),
+    );
   }
 
+  // 👨‍🎓 ALUNO CONSULTA MATERIAL
+  @Get('aluno/turma/:turmaId/disciplina/:disciplinaId')
+  findForAluno(
+    @Param('turmaId') turmaId: number,
+    @Param('disciplinaId') disciplinaId: number,
+  ) {
+    return this.service.findVisiveis(
+      Number(turmaId),
+      Number(disciplinaId),
+    );
+  }
+
+  // 👨‍🏫 PROFESSOR ATUALIZA
   @Patch(':id')
   update(
     @Param('id') id: number,
     @Body() dto: UpdateMaterialDidaticoDto,
-    @Headers('tipo') tipo: string,
+    @Headers('professor-id') professorId: number,
   ) {
-    if (tipo !== 'PROFESSOR') {
+    if (!professorId) {
       throw new ForbiddenException();
     }
 
-    return this.service.update(id, dto);
+    return this.service.update(Number(id), dto);
   }
 
+  // 👨‍🏫 TOGGLE VISIBILIDADE
+  @Patch(':id/visibilidade')
+  toggle(@Param('id') id: number) {
+    return this.service.toggleVisibilidade(Number(id));
+  }
+
+  // 👨‍🏫 REMOVE
   @Delete(':id')
   remove(
     @Param('id') id: number,
-    @Headers('tipo') tipo: string,
+    @Headers('professor-id') professorId: number,
   ) {
-    if (tipo !== 'PROFESSOR') {
+    if (!professorId) {
       throw new ForbiddenException();
     }
 
-    return this.service.remove(id);
+    return this.service.remove(Number(id));
   }
 }
