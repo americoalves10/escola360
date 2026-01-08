@@ -50,5 +50,4 @@ export class TurmaService {
 
     return this.turmaRepository.save(turma);
   }
-
 }
