@@ -39,42 +39,51 @@ export class MaterialDidaticoController {
   findForAluno(
     @Param('turmaId') turmaId: number,
     @Param('disciplinaId') disciplinaId: number,
+    @Headers('alunoId') alunoId: number,
   ) {
-    return this.service.findVisiveis(
-      Number(turmaId),
-      Number(disciplinaId),
-    );
-  }
-
-  // PROFESSOR ATUALIZA
-  @Patch(':id')
-  update(
-    @Param('id') id: number,
-    @Body() dto: UpdateMaterialDidaticoDto,
-    @Headers('professor-id') professorId: number,
-  ) {
-    if (!professorId) {
-      throw new ForbiddenException();
+    if (!alunoId) {
+      throw new ForbiddenException('Aluno não identificado');
     }
 
-    return this.service.update(Number(id), dto);
-  }
+    {
+      return this.service.findVisiveisParaAluno(
+        Number(alunoId),
+        Number(turmaId),
+        Number(disciplinaId),
 
-  // TOGGLE VISIBILIDADE
-  @Patch(':id/visibilidade')
-  toggle(@Param('id') id: number) {
-    return this.service.toggleVisibilidade(Number(id));
-  }
-
-  // REMOVE
-  @Delete(':id')
-  remove(
-    @Param('id') id: number,
-    @Headers('professor-id') professorId: number,
-  ) {
-    if (!professorId) {
-      throw new ForbiddenException();
+      );
     }
-    return this.service.remove(Number(id));
   }
-}
+
+    // PROFESSOR ATUALIZA
+    @Patch(':id')
+    update(
+      @Param('id') id: number,
+      @Body() dto: UpdateMaterialDidaticoDto,
+      @Headers('professor-id') professorId: number,
+    ) {
+      if (!professorId) {
+        throw new ForbiddenException();
+      }
+
+      return this.service.update(Number(id), dto);
+    }
+
+    // TOGGLE VISIBILIDADE
+    @Patch(':id/visibilidade')
+    toggle(@Param('id') id: number) {
+      return this.service.toggleVisibilidade(Number(id));
+    }
+
+    // REMOVE
+    @Delete(':id')
+    remove(
+      @Param('id') id: number,
+      @Headers('professor-id') professorId: number,
+    ) {
+      if (!professorId) {
+        throw new ForbiddenException();
+      }
+      return this.service.remove(Number(id));
+    }
+  }

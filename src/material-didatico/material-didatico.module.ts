@@ -7,6 +7,8 @@ import { Disciplina } from 'src/disciplina/entity/disciplina.entity';
 import { Turma } from 'src/turma/entity/turma.entity';
 import { MaterialDidaticoUploadController } from './material-didatico-upload.controller';
 import { Professor } from 'src/professor/entity/professor.entity';
+import { Matricula } from 'src/matricula/entity/matricula.entity';
+
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { Professor } from 'src/professor/entity/professor.entity';
       Disciplina,
       Turma,
       Professor,
+      Matricula,
     ]),
   ],
   controllers: [

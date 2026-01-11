@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MaterialDidatico } from './entity/material-didatico.entity';
@@ -6,6 +6,7 @@ import { CreateMaterialDidaticoDto } from './dto/material-didatico.dto';
 import { Disciplina } from 'src/disciplina/entity/disciplina.entity';
 import { Turma } from 'src/turma/entity/turma.entity';
 import { Professor } from 'src/professor/entity/professor.entity';
+import { Matricula } from 'src/matricula/entity/matricula.entity';
 
 @Injectable()
 export class MaterialDidaticoService {
@@ -21,6 +22,10 @@ export class MaterialDidaticoService {
 
     @InjectRepository(Professor)
     private readonly professorRepo: Repository<Professor>,
+
+    @InjectRepository(Matricula)
+    private readonly matriculaRepository: Repository<Matricula>,
+
   ) { }
 
   // 👨‍🏫 CRIAR MATERIAL
@@ -67,16 +72,30 @@ export class MaterialDidaticoService {
       order: { createdAt: 'DESC' },
     });
   }
-  
+
   // 👨‍🎓 LISTAR VISÍVEIS PARA ALUNO
-  async findVisiveis(turmaId: number, disciplinaId: number) {
+  async findVisiveisParaAluno(alunoId: number, turmaId: number, disciplinaId: number) {
+    const matricula = await this.matriculaRepository.findOne({
+      where: {
+        aluno: { id: alunoId },
+        turma: { id: turmaId },
+      },
+    });
+
+    if (!matricula) {
+      throw new ForbiddenException(
+        'Aluno não pertence a esta turma',
+      );
+    }
     return this.repository.find({
       where: {
         turma: { id: turmaId },
         disciplina: { id: disciplinaId },
         visivel: true,
       },
-      relations: ['professor'],
+      order: {
+        createdAt: 'DESC',
+      },
     });
   }
 
