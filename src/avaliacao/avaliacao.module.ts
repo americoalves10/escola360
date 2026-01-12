@@ -1,44 +1,27 @@
-import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { AlternativaController } from "./alternativa.controller";
-import { AlternativaService } from "./alternativa.service";
-import { AvaliacaoController } from "./avaliacao.controller";
-import { AvaliacaoService } from "./avaliacao.service";
-import { Alternativa } from "./entityes/alternativa.entity";
-import { Avaliacao } from "./entityes/avaliacao.entity";
-import { Questao } from "./entityes/questao.entity";
-import { RespostaAluno } from "./entityes/resposta-aluno.entity";
-import { ResultadoAvaliacao } from "./entityes/resultado-avaliacao.entity";
-import { QuestaoController } from "./questao.controller";
-import { QuestaoService } from "./questao.service";
-import { RespostaAlunoController } from "./resposta-aluno.controller";
-import { RespostaAlunoService } from "./resposta-aluno.service";
-import { ResultadoAvaliacaoController } from "./resultado-avaliacao.controller";
-import { ResultadoAvaliacaoService } from "./resultado-avaliacao.service";
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Avaliacao } from './entity/avaliacao.entity';
+import { AvaliacaoService } from './avaliacao.service';
+import { AvaliacaoController } from './avaliacao.controller';
+import { Turma } from 'src/turma/entity/turma.entity';
+import { Disciplina } from 'src/disciplina/entity/disciplina.entity';
+import { Professor } from 'src/professor/entity/professor.entity';
+import { Aluno } from 'src/aluno/entity/aluno.entity';
+import { Matricula } from 'src/matricula/entity/matricula.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       Avaliacao,
-      Questao,
-      Alternativa,
-      RespostaAluno,
-      ResultadoAvaliacao,
+      Turma,
+      Disciplina,
+      Professor,
+      Aluno,
+      Matricula,
     ]),
   ],
-  controllers: [
-    AvaliacaoController,
-    QuestaoController,
-    AlternativaController,
-    RespostaAlunoController,
-    ResultadoAvaliacaoController,
-  ],
-  providers: [
-    AvaliacaoService,
-    QuestaoService,
-    AlternativaService,
-    RespostaAlunoService,
-    ResultadoAvaliacaoService,
-  ],
+  controllers: [AvaliacaoController],
+  providers: [AvaliacaoService],
+  exports: [TypeOrmModule],
 })
-export class AvaliacaoModule { }
+export class AvaliacaoModule {}

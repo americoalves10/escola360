@@ -14,6 +14,8 @@ import { MatriculaModule } from './matricula/matricula.module';
 import { MatriculaDisciplinaModule } from './matricula-disciplina/matricula-disciplina.module';
 import { AvaliacaoModule } from './avaliacao/avaliacao.module';
 import { MaterialDidaticoModule } from './material-didatico/material-didatico.module';
+import { SubmissaoAvaliacaoModule } from './avaliacao-submissao/submissao-avaliacao.module';
+import { HistoricoModule } from './historico/historico.module';
 
 @Module({
   imports: [
@@ -45,7 +47,9 @@ import { MaterialDidaticoModule } from './material-didatico/material-didatico.mo
     MatriculaModule,
     MatriculaDisciplinaModule,
     AvaliacaoModule,
+    SubmissaoAvaliacaoModule,
     MaterialDidaticoModule,
+    HistoricoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
