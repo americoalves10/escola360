@@ -62,20 +62,20 @@ export class MatriculaDisciplinaService {
         });
 
         return this.repo.save(md);
-    }
-
+    }   
 
     listar() {
-        return this.repo.find({
-            relations: [
-                'aluno',
-                'turma',
-                'disciplinas',
-                'disciplinas.turmaProfessorDisciplina',
-                'disciplinas.turmaProfessorDisciplina.professor',
-                'disciplinas.turmaProfessorDisciplina.disciplina',
-            ],
-        });
-    }
+    return this.repo.find({
+        relations: [
+            'matricula',
+            'matricula.aluno',
+            'matricula.turma',
+            'turmaProfessorDisciplina',
+            'turmaProfessorDisciplina.professor',
+            'turmaProfessorDisciplina.disciplina',
+        ],
+    });
+}
+
 
 }
