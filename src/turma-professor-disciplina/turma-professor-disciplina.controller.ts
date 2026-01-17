@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Headers, BadRequestException } from "@nestjs/common";
 import { TurmaProfessorDisciplinaService } from "./turma-professor-disciplina.service";
 import { CreateTurmaProfessorDisciplinaDto } from "./dto/turmaProfessorDisciplina.dto";
 
@@ -14,5 +14,14 @@ export class TurmaProfessorDisciplinaController {
   @Get()
   listar() {
     return this.service.listar();
+  }
+
+  @Get('professor')
+  listarPorProfessor(@Headers('professor-id') professorId: string) {
+    if (!professorId) {
+      throw new BadRequestException('Professor não identificado');
+    }
+
+    return this.service.listarPorProfessor(Number(professorId));
   }
 }

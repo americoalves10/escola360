@@ -41,4 +41,13 @@ export class TurmaProfessorDisciplinaService {
       relations: ['professor', 'turma', 'disciplina'],
     });
   }
+
+  listarPorProfessor(professorId: number) {
+    return this.ptRepo.find({
+      where: {
+        professor: { id: professorId },
+      },
+      relations: ['turma', 'disciplina'],
+    });
+  }
 }
