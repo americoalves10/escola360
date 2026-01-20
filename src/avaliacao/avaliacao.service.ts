@@ -96,65 +96,74 @@ export class AvaliacaoService {
             },
         });
     }
-    
+
     async update(
-            avaliacaoId: number,
-            professorId: number,
-            dto: UpdateAvaliacaoDto,
-        ) {
-            const avaliacao = await this.repo.findOne({
-                where: { id: avaliacaoId },
-                relations: ['professor'],
-            });
+        avaliacaoId: number,
+        professorId: number,
+        dto: UpdateAvaliacaoDto,
+    ) {
+        const avaliacao = await this.repo.findOne({
+            where: { id: avaliacaoId },
+            relations: ['professor'],
+        });
 
-            if (!avaliacao) {
-                throw new NotFoundException('Avaliação não encontrada');
-            }
-
-            if (avaliacao.professor.id !== professorId) {
-                throw new ForbiddenException(
-                    'Sem permissão para atualizar esta avaliação',
-                );
-            }
-
-            Object.assign(avaliacao, dto);
-            return this.repo.save(avaliacao);
+        if (!avaliacao) {
+            throw new NotFoundException('Avaliação não encontrada');
         }
+
+        if (avaliacao.professor.id !== professorId) {
+            throw new ForbiddenException(
+                'Sem permissão para atualizar esta avaliação',
+            );
+        }
+
+        Object.assign(avaliacao, dto);
+        return this.repo.save(avaliacao);
+    }
 
     async findForAlunoDownload(avaliacaoId: number, alunoId: number) {
-            const avaliacao = await this.repo.findOne({
-                where: { id: avaliacaoId },
-                relations: ['turma'],
-            });
+        const avaliacao = await this.repo.findOne({
+            where: { id: avaliacaoId },
+            relations: ['turma'],
+        });
 
-            if (!avaliacao) {
-                throw new NotFoundException('Avaliação não encontrada');
-            }
-
-            if (!avaliacao.visivelParaAluno) {
-                throw new ForbiddenException('Avaliação não está disponível para o aluno');
-            }
-
-            if (!avaliacao.ficheiroUrl) {
-                throw new NotFoundException('Arquivo da avaliação não encontrado');
-            }
-
-            const matricula = await this.matriculaRepo.findOne({
-                where: {
-                    aluno: { id: alunoId },
-                    turma: { id: avaliacao.turma.id },
-                },
-                relations: ['turma'],
-            });
-
-            if (!matricula) {
-                throw new ForbiddenException(
-                    'Aluno não pertence à turma desta avaliação',
-                );
-            }
-
-            return join(process.cwd(), avaliacao.ficheiroUrl);
+        if (!avaliacao) {
+            throw new NotFoundException('Avaliação não encontrada');
         }
 
+        if (!avaliacao.visivelParaAluno) {
+            throw new ForbiddenException('Avaliação não está disponível para o aluno');
+        }
 
+        if (!avaliacao.ficheiroUrl) {
+            throw new NotFoundException('Arquivo da avaliação não encontrado');
+        }
+
+        const matricula = await this.matriculaRepo.findOne({
+            where: {
+                aluno: { id: alunoId },
+                turma: { id: avaliacao.turma.id },
+            },
+            relations: ['turma'],
+        });
+
+        if (!matricula) {
+            throw new ForbiddenException(
+                'Aluno não pertence à turma desta avaliação',
+            );
+        }
+
+        return join(process.cwd(), avaliacao.ficheiroUrl);
     }
+
+    async listarPorProfessor(professorId: number) {
+        return this.repo.find({
+            where: {
+                professor: { id: professorId },
+            },
+            relations: ['turma', 'disciplina'],
+            order: { createdAt: 'ASC' },
+        });
+    }
+
+}

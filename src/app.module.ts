@@ -16,6 +16,7 @@ import { AvaliacaoModule } from './avaliacao/avaliacao.module';
 import { MaterialDidaticoModule } from './material-didatico/material-didatico.module';
 import { SubmissaoAvaliacaoModule } from './avaliacao-submissao/submissao-avaliacao.module';
 import { HistoricoModule } from './historico/historico.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { HistoricoModule } from './historico/historico.module';
     SubmissaoAvaliacaoModule,
     MaterialDidaticoModule,
     HistoricoModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

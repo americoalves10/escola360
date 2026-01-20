@@ -69,6 +69,17 @@ export class AvaliacaoController {
         return this.service.findByProfessor(Number(professorId));
     }
 
+    @Get('professor/:professorId')
+    listarPorProfessor(
+    @Param('professorId') professorId: number,
+    ) {
+        if (!professorId) {
+            throw new ForbiddenException('Professor não identificado');
+        }
+
+        return this.service.listarPorProfessor(Number(professorId));
+    }
+
     @Get('aluno/:avaliacaoId/download')
     async downloadAvaliacao(
         @Param('avaliacaoId') avaliacaoId: number,
